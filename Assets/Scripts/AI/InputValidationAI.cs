@@ -22,7 +22,6 @@ public class EvidenceValidationResult
 {
     public string status;
     public string response;
-    public List<string> hypotheses;
 
     public InputStatus GetStatus()
     {
@@ -35,23 +34,24 @@ public class EvidenceValidationResult
                 $"Unknown input status: {status}")
         };
     }
+
+    public override string ToString()
+    {
+        return $"상태: {status}\n대사: {response}";
+    }
 }
 
 public class InputValidationAI
 {
     private readonly OpenAIClient client;
-
-    // Structured Outputs를 지원하는 모델명으로 설정
-    private readonly string model;
+    
     private readonly string InputValidationInstructions;
 
     public InputValidationAI(
         OpenAIClient client,
-        string model,
         string inputValidationInstructions)
     {
         this.client = client;
-        this.model = model;
         this.InputValidationInstructions = inputValidationInstructions;
     }
 
@@ -61,20 +61,24 @@ public class InputValidationAI
     {
         string requestJson =
             OpenAIRequestBuilder.BuildStructuredRequest(
-                model: model,
+                model: "gpt-5.4-nano",
                 instructions: InputValidationInstructions,
                 inputData: input,
+                effort: "none",
+                max_output_tokens: 300,
+                verbosity: "low",
                 schemaName: "evidence_validation_result",
                 schema: CreateValidationSchema());
-
+        
         string responseJson =
             await client.SendAsync(
                 requestJson,
                 cancellationToken);
-
-        return OpenAIResponseParser
+        
+        var r = OpenAIResponseParser
             .ParseStructuredOutput<EvidenceValidationResult>(
                 responseJson);
+        return r;
     }
     
     public static JObject CreateValidationSchema()
@@ -95,19 +99,10 @@ public class InputValidationAI
                 {
                     ["type"] = "string"
                 },
-                ["hypotheses"] = new JObject
-                {
-                    ["type"] = "array",
-                    ["items"] = new JObject
-                    {
-                        ["type"] = "string"
-                    }
-                }
             },
             ["required"] = new JArray(
                 "status",
-                "response",
-                "hypotheses"),
+                "response"),
             ["additionalProperties"] = false
         };
     }

@@ -7,8 +7,6 @@ public class AISystemManager : MonoBehaviour
     public AISystem AI { get; private set; }
 
     [Header("OpenAI")]
-    [SerializeField]
-    private string model = "gpt-5-mini";
     [SerializeField] private KeyData keyData;
     [SerializeField] private KeyData inputValidationInstruction;
     [SerializeField] private KeyData detectiveInstruction;
@@ -39,7 +37,6 @@ public class AISystemManager : MonoBehaviour
 
         AI = new AISystem(
             openAIClient,
-            model,
             inputValidationInstruction.key,
             detectiveInstruction.key,
             evaluationInstruction.key);

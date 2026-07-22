@@ -21,21 +21,40 @@ public class DeductionEvaluationResult
 
     public List<string> matchedPoints;
     public List<string> detectedMisleadingClaims;
+    
+    public override string ToString()
+    {
+        string matchedPointsText =
+            matchedPoints == null || matchedPoints.Count == 0
+                ? "없음"
+                : "- " + string.Join("\n- ", matchedPoints);
+
+        string misleadingClaimsText =
+            detectedMisleadingClaims == null ||
+            detectedMisleadingClaims.Count == 0
+                ? "없음"
+                : "- " + string.Join("\n- ", detectedMisleadingClaims);
+
+        return
+            $"Culprit Score: {culpritScore:F2}\n" +
+            $"Method Score: {methodScore:F2}\n" +
+            $"Motive Score: {motiveScore:F2}\n" +
+            $"Key Point Score: {keyPointScore:F2}\n" +
+            $"Matched Points:\n{matchedPointsText}\n" +
+            $"Detected Misleading Claims:\n{misleadingClaimsText}";
+    }
 }
  
 public class DeductionEvaluationAI
 {
     private readonly OpenAIClient client;
-    private readonly string model;
     private readonly string EvaluationInstruction;
 
     public DeductionEvaluationAI(
         OpenAIClient client,
-        string model,
         string evaluationInstruction)
     {
         this.client = client;
-        this.model = model;
         this.EvaluationInstruction = evaluationInstruction;
     }
 
@@ -45,9 +64,12 @@ public class DeductionEvaluationAI
     {
         string requestJson =
             OpenAIRequestBuilder.BuildStructuredRequest(
-                model,
+                "gpt-5.4-mini",
                 EvaluationInstruction,
                 input,
+                effort: "low",
+                max_output_tokens: 500,
+                verbosity: "low",
                 "deduction_evaluation_result",
                 CreateEvaluationSchema());
 

@@ -5,7 +5,7 @@ public class EvidenceRecorder : MonoBehaviour
 {
     private List<PhotoData> photos;
     private List<CollectiveEvidence> collectiveEvidences;
-    private List<string> hypothesis;
+    private List<EvidenceRecord>  evidenceRecords;
 
     public void SavePhotos(List<PhotoData> datas)
     {
@@ -15,11 +15,6 @@ public class EvidenceRecorder : MonoBehaviour
     public void SaveCollectiveEvidence(List<CollectiveEvidence> datas)
     {
         collectiveEvidences.AddRange(datas);
-    }
-
-    public void SaveHypothesis(List<string> datas)
-    {
-        hypothesis.AddRange(datas);
     }
 
     public void FinalDeduction()

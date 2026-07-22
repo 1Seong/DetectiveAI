@@ -8,18 +8,17 @@ public class AISystem
 
     public AISystem(
         OpenAIClient client,
-        string model,
         string inputValidationInstruction,
         string detectiveInstruction,
         string evaluationInstruction)
     {
         InputValidator =
-            new InputValidationAI(client, model, inputValidationInstruction);
+            new InputValidationAI(client, inputValidationInstruction);
 
         Detective =
-            new DetectiveAI(client, model, detectiveInstruction);
+            new DetectiveAI(client, detectiveInstruction);
 
         Evaluator =
-            new DeductionEvaluationAI(client, model, evaluationInstruction);
+            new DeductionEvaluationAI(client, evaluationInstruction);
     }
 }

@@ -5,11 +5,17 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 [Serializable]
+public class EvidenceRecord
+{
+    public List<EvidenceData> evidences;
+    public string playerDescription;
+}
+
+[Serializable]
 public class FinalDeductionInput
 {
     public List<string> backgroundFacts;
-    public List<EvidenceData> evidences;
-    public List<string> hypotheses;
+    public List<EvidenceRecord> evidenceRecords;
 }
 
 [Serializable]
@@ -19,20 +25,30 @@ public class FinalDeductionResult
     public string culprit;
     public string method;
     public string motive;
+
+    public List<string> reasoningPoints;
+
+    public override string ToString()
+    {
+        string reasoningPointsText =
+            reasoningPoints == null || reasoningPoints.Count == 0
+                ? "없음"
+                : string.Join("\n- ", reasoningPoints);
+        
+        return $"대사: {narrative}\n범인: {culprit}\n수법: {method}\n동기: {motive}\n추론포인트: {reasoningPointsText}";
+    }
 }
 
 public class DetectiveAI
 {
     private readonly OpenAIClient client;
-    private readonly string model;
     private readonly string DetectiveInstructions;
 
     public DetectiveAI(
         OpenAIClient client,
-        string model, string detectiveInstructions)
+        string detectiveInstructions)
     {
         this.client = client;
-        this.model = model;
         this.DetectiveInstructions = detectiveInstructions;
     }
 
@@ -42,9 +58,12 @@ public class DetectiveAI
     {
         string requestJson =
             OpenAIRequestBuilder.BuildStructuredRequest(
-                model,
+                "gpt-5.4-mini",
                 DetectiveInstructions,
                 input,
+                effort: "low",
+                max_output_tokens: 800,
+                verbosity: "medium",
                 "final_deduction_result",
                 CreateFinalDeductionSchema());
 
@@ -69,12 +88,21 @@ public class DetectiveAI
                 ["culprit"] = StringSchema(),
                 ["method"] = StringSchema(),
                 ["motive"] = StringSchema(),
+                ["reasoningPoints"] = new JObject
+                {
+                    ["type"] = "array",
+                    ["items"] = new JObject
+                    {
+                        ["type"] = "string"
+                    }
+                }
             },
             ["required"] = new JArray(
                 "narrative",
                 "culprit",
                 "method",
-                "motive"),
+                "motive",
+                "reasoningPoints"),
             ["additionalProperties"] = false
         };
     }
