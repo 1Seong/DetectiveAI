@@ -16,19 +16,18 @@ public class CollectiveUICell : MonoBehaviour, IPointerEnterHandler, IPointerExi
         image.sprite = data.sprite;
         image.SetNativeSize();
         itemImg = image;
+        this.data = data;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        itemImg.transform.DOScale(targetScale, 0.3f);
-        InventoryManager.instance.nameText.gameObject.SetActive(true);
+        itemImg.transform.DOScale(targetScale, 0.2f);
         InventoryManager.instance.nameText.text = data.data.evidenceId;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        itemImg.transform.DOScale(1f, 0.3f);
-        InventoryManager.instance.nameText.gameObject.SetActive(false);
+        itemImg.transform.DOScale(1f, 0.2f);
         InventoryManager.instance.nameText.text = "";
     }
     

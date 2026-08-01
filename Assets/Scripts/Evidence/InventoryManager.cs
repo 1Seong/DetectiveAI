@@ -11,6 +11,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private EvidenceRecorder evidenceRecorder;
     [SerializeField] private Transform bagButton;
     [SerializeField] private float bagTargetScale = 1.2f;
+    [SerializeField] private Image background;
+    [SerializeField] private GameObject inventoryParent;
+    private bool isInventoryOpened = false;
+    private bool isInventoryOpening = false;
     
     [Header("PhotoUI")]
     [SerializeField] private Transform photoUIParent;
@@ -74,6 +78,30 @@ public class InventoryManager : MonoBehaviour
         // UI 프리펩 생성
         var o = Instantiate(collectiveUIPrefab, collectiveUIParent);
         o.GetComponent<CollectiveUICell>().Init(collective);
+    }
+
+    public void ToggleInventory()
+    {
+        if (isInventoryOpening) return;
+        isInventoryOpening = true;
+        
+        if (isInventoryOpened)
+        {
+            isInventoryOpened = false;
+            inventoryParent.SetActive(false);
+            background.DOFade(0f, 0.3f).OnComplete(()=>
+            {
+                background.gameObject.SetActive(false);
+                isInventoryOpening = false;
+            });
+        }
+        else
+        {
+            isInventoryOpened = true;
+            background.gameObject.SetActive(true);
+            inventoryParent.SetActive(true);
+            background.DOFade(250.0f / 255f, 0.3f).OnComplete(() => isInventoryOpening = false);
+        }
     }
 
     public void ShowPhotos()

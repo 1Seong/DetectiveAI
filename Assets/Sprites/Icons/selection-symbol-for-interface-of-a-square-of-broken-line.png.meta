@@ -1,0 +1,442 @@
+fileFormatVersion: 2
+guid: 22d974a3ec9e25c4d95bdd84f448799d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7013209086174545108
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_0
+  - first:
+      213: -951350718226349691
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_1
+  - first:
+      213: -7907019209281319489
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_2
+  - first:
+      213: 4635223384956663638
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_3
+  - first:
+      213: -6385897618268128627
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_4
+  - first:
+      213: 5692731775988379313
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_5
+  - first:
+      213: 2061360603264147485
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_6
+  - first:
+      213: 1411504998511813726
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_7
+  - first:
+      213: -2758930046148871782
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_8
+  - first:
+      213: -5113063211175337355
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_9
+  - first:
+      213: 3362716079244903220
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_10
+  - first:
+      213: 8581557705940454674
+    second: selection-symbol-for-interface-of-a-square-of-broken-line_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 454
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d4c9fc918ce35160800000000000000
+      internalID: 7013209086174545108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_1
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 488
+        width: 83
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5814e4fef8f1cc2f0800000000000000
+      internalID: -951350718226349691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_2
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 488
+        width: 83
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbdc89e1cef944290800000000000000
+      internalID: -7907019209281319489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_3
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 454
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 657fce23c1f935040800000000000000
+      internalID: 4635223384956663638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 294
+        width: 24
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8a7d1b33fbb067a0800000000000000
+      internalID: -6385897618268128627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_5
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 294
+        width: 24
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bead5d8365a00f40800000000000000
+      internalID: 5692731775988379313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 135
+        width: 24
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d106b8f0c8c6b9c10800000000000000
+      internalID: 2061360603264147485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_7
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 135
+        width: 24
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e542cf2515ca69310800000000000000
+      internalID: 1411504998511813726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a99f42f8dbf46b9d0800000000000000
+      internalID: -2758930046148871782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_9
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 0
+        width: 83
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 572a6cf7910ca09b0800000000000000
+      internalID: -5113063211175337355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_10
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 0
+        width: 83
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43303e72574caae20800000000000000
+      internalID: 3362716079244903220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: selection-symbol-for-interface-of-a-square-of-broken-line_11
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 0
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21dc81a3441d71770800000000000000
+      internalID: 8581557705940454674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      selection-symbol-for-interface-of-a-square-of-broken-line_0: 7013209086174545108
+      selection-symbol-for-interface-of-a-square-of-broken-line_1: -951350718226349691
+      selection-symbol-for-interface-of-a-square-of-broken-line_10: 3362716079244903220
+      selection-symbol-for-interface-of-a-square-of-broken-line_11: 8581557705940454674
+      selection-symbol-for-interface-of-a-square-of-broken-line_2: -7907019209281319489
+      selection-symbol-for-interface-of-a-square-of-broken-line_3: 4635223384956663638
+      selection-symbol-for-interface-of-a-square-of-broken-line_4: -6385897618268128627
+      selection-symbol-for-interface-of-a-square-of-broken-line_5: 5692731775988379313
+      selection-symbol-for-interface-of-a-square-of-broken-line_6: 2061360603264147485
+      selection-symbol-for-interface-of-a-square-of-broken-line_7: 1411504998511813726
+      selection-symbol-for-interface-of-a-square-of-broken-line_8: -2758930046148871782
+      selection-symbol-for-interface-of-a-square-of-broken-line_9: -5113063211175337355
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
