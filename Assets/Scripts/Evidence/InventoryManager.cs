@@ -1,13 +1,16 @@
 using System.Collections.Generic;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-
-    [SerializeField] private Image blackBackground;
+    
     [SerializeField] private EvidenceRecorder evidenceRecorder;
+    [SerializeField] private Transform bagButton;
+    [SerializeField] private float bagTargetScale = 1.2f;
     
     [Header("PhotoUI")]
     [SerializeField] private Transform photoUIParent;
@@ -16,10 +19,7 @@ public class InventoryManager : MonoBehaviour
     [Header("ItemUI")]
     [SerializeField] private Transform collectiveUIParent;
     [SerializeField] private GameObject collectiveUIPrefab;
-    
-    [Header("SubmitUI")]
-    [SerializeField] private Transform collectiveSubmitUIParent;
-    [SerializeField] private GameObject collectiveSubmitUIPrefab;
+    public TMP_Text nameText;
     
     void Awake()
     {
@@ -27,10 +27,38 @@ public class InventoryManager : MonoBehaviour
             instance = this;
     }
 
-    private List<PhotoData> photos;
-    private List<CollectiveEvidence> collectives;
+    private List<PhotoData> photos =  new List<PhotoData>();
+    private List<CollectiveEvidence> collectives = new List<CollectiveEvidence>();
+    
+    public Vector3 GetBagButtonPos() => bagButton.position;
 
-    private int currentPhotoIndex;
+    [SerializeField] private int bagScaleActiveCount = 0;
+
+    public void ScaleUpBagButton()
+    {
+        ++bagScaleActiveCount;
+        
+        // 이미 다른 아이템 때문에 확대된 상태
+        if (bagScaleActiveCount > 1)
+            return;
+        
+        bagButton.DOKill();
+        
+        bagButton.DOScale(bagTargetScale, 0.3f);
+    }
+
+    public void ScaleDownBagButton()
+    {
+        bagScaleActiveCount = Mathf.Max(0, bagScaleActiveCount - 1);
+
+        // 아직 연출 중인 다른 아이템이 있음
+        if (bagScaleActiveCount > 0)
+            return;
+
+        bagButton.DOKill();
+        
+        bagButton.DOScale(1f, 0.3f);
+    }
 
     public void AddPhoto(PhotoData photo)
     {
@@ -44,10 +72,10 @@ public class InventoryManager : MonoBehaviour
     {
         collectives.Add(collective);
         // UI 프리펩 생성
-        // ui 이미지에 이미지 넣기
+        var o = Instantiate(collectiveUIPrefab, collectiveUIParent);
+        o.GetComponent<CollectiveUICell>().Init(collective);
     }
-    
-    #region PhotoUI
+
     public void ShowPhotos()
     {
         // ui parent에 있는 사진들을 펼쳐서 보여주기
@@ -71,38 +99,8 @@ public class InventoryManager : MonoBehaviour
         
     }
 
-    public void DeletePhoto()
-    {
-        photos.RemoveAt(currentPhotoIndex);
-        Destroy(photoUIParent.GetChild(currentPhotoIndex).gameObject);
-    }
-    #endregion
-    
-    #region CollectiveUI
-    
-    #endregion
-    
-    #region SubmitUI
-
-    public void ShowSubmitUI()
+    public void DeletePhoto(int index)
     {
         
     }
-
-    public void SelectPhoto()
-    {
-        
-    }
-
-    public void SelectCollectives()
-    {
-        
-    }
-
-    public void Submit()
-    {
-        
-    }
-    
-    #endregion
 }
