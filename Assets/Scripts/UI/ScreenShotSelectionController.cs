@@ -19,12 +19,19 @@ public class ScreenShotSelectionController :
     [SerializeField] private RectTransform selectionArea;
     [SerializeField] private RawImage croppedImage;
     [SerializeField] private GameObject inputArea;
+    [SerializeField] private GameObject resultGroup;
+    
+    [SerializeField] private RectTransform dimTop;
+    [SerializeField] private RectTransform dimBottom;
+    [SerializeField] private RectTransform dimLeft;
+    [SerializeField] private RectTransform dimRight;
 
     [Header("Capture")]
     [SerializeField] private GameObject[] hideWhileCapturing;
 
     [Header("Selection")]
     [SerializeField] private float minimumSelectionSize = 20f;
+    [SerializeField] private Vector2 maxCaptureSize = new Vector2(800f, 600f);
 
     [Header("Animation")]
     [SerializeField] private float startScale = 0.8f;
@@ -63,21 +70,25 @@ public class ScreenShotSelectionController :
     private async UniTask EnterScreenshotModeAsync(
         CancellationToken cancellationToken)
     {
-        if (isCaptureMode)
-            return;
+        //if (isCaptureMode)
+            //return;
 
         isCaptureMode = true;
+        
+        screenshotRoot.SetActive(false);
 
         SetCaptureUIVisible(false);
 
-        // 숨긴 UI가 렌더링 결과에 반영될 때까지 대기
-        await UniTask.WaitForEndOfFrame(cancellationToken);
+        if (capturedTexture == null)
+        {
+            // 숨긴 UI가 렌더링 결과에 반영될 때까지 대기
+            await UniTask.WaitForEndOfFrame(cancellationToken);
+            ReleaseCapturedTexture();
+            capturedTexture =
+                ScreenCapture.CaptureScreenshotAsTexture();
+        }
 
-        ReleaseCapturedTexture();
-
-        capturedTexture =
-            ScreenCapture.CaptureScreenshotAsTexture();
-
+        ReleaseCroppedTexture();
         frozenScreen.texture = capturedTexture;
 
         screenshotRoot.SetActive(true);
@@ -87,8 +98,10 @@ public class ScreenShotSelectionController :
         dimOverlay.gameObject.SetActive(false);
         croppedImage.gameObject.SetActive(false);
         inputArea.SetActive(true);
+        resultGroup.SetActive(false);
+        ShowFullDim();
 
-        SetCaptureUIVisible(true);
+        //SetCaptureUIVisible(true);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -106,6 +119,7 @@ public class ScreenShotSelectionController :
         dimOverlay.gameObject.SetActive(false);
         croppedImage.gameObject.SetActive(false);
         selectionArea.gameObject.SetActive(true);
+        SetDimVisible(true);
 
         UpdateSelectionArea();
     }
@@ -115,7 +129,7 @@ public class ScreenShotSelectionController :
         if (!isCaptureMode || !isDragging)
             return;
 
-        dragEnd = ClampToScreen(eventData.position);
+        dragEnd = ClampDragEnd(eventData.position);
 
         UpdateSelectionArea();
     }
@@ -127,14 +141,14 @@ public class ScreenShotSelectionController :
         
         inputArea.SetActive(false);
         isDragging = false;
-        dragEnd = ClampToScreen(eventData.position);
+        dragEnd = ClampDragEnd(eventData.position);
 
         Rect selectedRect = GetSelectedScreenRect();
 
         if (selectedRect.width < minimumSelectionSize ||
             selectedRect.height < minimumSelectionSize)
         {
-            selectionArea.gameObject.SetActive(false);
+            EnterScreenshotMode();
             return;
         }
 
@@ -155,6 +169,7 @@ public class ScreenShotSelectionController :
             ).Token;
 
         selectionArea.gameObject.SetActive(false);
+        SetDimVisible(false);
         dimOverlay.gameObject.SetActive(true);
         croppedImage.gameObject.SetActive(true);
 
@@ -175,12 +190,15 @@ public class ScreenShotSelectionController :
         resultRect.localScale =
             Vector3.one * startScale;
 
+        croppedImage.transform.position = selectedRect.center;
         await resultRect
             .DOScale(1f, popDuration)
             .SetEase(Ease.OutBack)
             .ToUniTask(
                 cancellationToken: linkedToken
             );
+        await resultRect.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.InOutSine).ToUniTask(cancellationToken: linkedToken);
+        resultGroup.SetActive(true);
     }
 
     private void CreateCroppedTexture(Rect selectedRect)
@@ -245,25 +263,27 @@ public class ScreenShotSelectionController :
                 ? null
                 : screenshotCanvas.worldCamera;
 
-        RectTransformUtility
-            .ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                selectedRect.center,
-                uiCamera,
-                out Vector2 localCenter
-            );
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            selectedRect.min,
+            uiCamera,
+            out Vector2 localMin
+        );
 
-        float scaleFactor =
-            screenshotCanvas.scaleFactor;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            selectedRect.max,
+            uiCamera,
+            out Vector2 localMax
+        );
 
-        selectionArea.anchoredPosition =
-            localCenter;
+        Vector2 localCenter = (localMin + localMax) * 0.5f;
+        Vector2 localSize = localMax - localMin;
 
-        selectionArea.sizeDelta =
-            new Vector2(
-                selectedRect.width / scaleFactor,
-                selectedRect.height / scaleFactor
-            );
+        selectionArea.anchoredPosition = localCenter;
+        selectionArea.sizeDelta = localSize;
+
+        UpdateDimAreas(localMin, localMax);
     }
 
     private Rect GetSelectedScreenRect()
@@ -279,6 +299,101 @@ public class ScreenShotSelectionController :
             maxX,
             maxY
         );
+    }
+    
+    private void UpdateDimAreas(Vector2 selectionMin, Vector2 selectionMax)
+    {
+        Rect canvasLocalRect = canvasRect.rect;
+
+        float canvasLeft = canvasLocalRect.xMin;
+        float canvasRight = canvasLocalRect.xMax;
+        float canvasBottom = canvasLocalRect.yMin;
+        float canvasTop = canvasLocalRect.yMax;
+
+        // 선택 영역 위쪽
+        SetRect(
+            dimTop,
+            canvasLeft,
+            selectionMax.y,
+            canvasRight,
+            canvasTop
+        );
+
+        // 선택 영역 아래쪽
+        SetRect(
+            dimBottom,
+            canvasLeft,
+            canvasBottom,
+            canvasRight,
+            selectionMin.y
+        );
+
+        // 선택 영역 왼쪽
+        SetRect(
+            dimLeft,
+            canvasLeft,
+            selectionMin.y,
+            selectionMin.x,
+            selectionMax.y
+        );
+
+        // 선택 영역 오른쪽
+        SetRect(
+            dimRight,
+            selectionMax.x,
+            selectionMin.y,
+            canvasRight,
+            selectionMax.y
+        );
+    }
+    
+    private void SetDimVisible(bool visible)
+    {
+        dimTop.gameObject.SetActive(visible);
+        dimBottom.gameObject.SetActive(visible);
+        dimLeft.gameObject.SetActive(visible);
+        dimRight.gameObject.SetActive(visible);
+    }
+    
+    private void ShowFullDim()
+    {
+        Rect rect = canvasRect.rect;
+
+        SetRect(
+            dimTop,
+            rect.xMin,
+            rect.yMin,
+            rect.xMax,
+            rect.yMax
+        );
+
+        dimBottom.sizeDelta = Vector2.zero;
+        dimLeft.sizeDelta = Vector2.zero;
+        dimRight.sizeDelta = Vector2.zero;
+
+        SetDimVisible(true);
+    }
+    
+    private void SetRect(
+        RectTransform target,
+        float minX,
+        float minY,
+        float maxX,
+        float maxY)
+    {
+        float width = Mathf.Max(0f, maxX - minX);
+        float height = Mathf.Max(0f, maxY - minY);
+
+        target.anchorMin = new Vector2(0.5f, 0.5f);
+        target.anchorMax = new Vector2(0.5f, 0.5f);
+        target.pivot = new Vector2(0.5f, 0.5f);
+
+        target.anchoredPosition = new Vector2(
+            (minX + maxX) * 0.5f,
+            (minY + maxY) * 0.5f
+        );
+
+        target.sizeDelta = new Vector2(width, height);
     }
 
     public void ExitScreenshotMode()
@@ -298,6 +413,8 @@ public class ScreenShotSelectionController :
 
         ReleaseCapturedTexture();
         ReleaseCroppedTexture();
+        
+        SetCaptureUIVisible(true);
     }
 
     private void CancelCurrentAnimation()
@@ -323,6 +440,26 @@ public class ScreenShotSelectionController :
                 Screen.height
             )
         );
+    }
+    
+    private Vector2 ClampDragEnd(Vector2 pointerPosition)
+    {
+        Vector2 screenPosition = ClampToScreen(pointerPosition);
+        Vector2 offset = screenPosition - dragStart;
+
+        offset.x = Mathf.Clamp(
+            offset.x,
+            -maxCaptureSize.x,
+            maxCaptureSize.x
+        );
+
+        offset.y = Mathf.Clamp(
+            offset.y,
+            -maxCaptureSize.y,
+            maxCaptureSize.y
+        );
+
+        return ClampToScreen(dragStart + offset);
     }
 
     private void SetCaptureUIVisible(bool visible)
