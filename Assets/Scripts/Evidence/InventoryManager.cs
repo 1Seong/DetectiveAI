@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
@@ -13,6 +14,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private float bagTargetScale = 1.2f;
     [SerializeField] private Image background;
     [SerializeField] private GameObject inventoryParent;
+    [SerializeField] private int maxPhoto = 10;
     private bool isInventoryOpened = false;
     private bool isInventoryOpening = false;
     
@@ -33,6 +35,20 @@ public class InventoryManager : MonoBehaviour
 
     private List<PhotoData> photos =  new List<PhotoData>();
     private List<CollectiveEvidence> collectives = new List<CollectiveEvidence>();
+    private void OnDestroy()
+    {
+        foreach (var i in photos)
+        {
+            if (i != null)
+            {
+                if (i.tex != null)
+                {
+                    Destroy(i.tex);
+                    i.tex = null;
+                }
+            }
+        }
+    }
     
     public Vector3 GetBagButtonPos() => bagButton.position;
 
@@ -45,7 +61,7 @@ public class InventoryManager : MonoBehaviour
         // 이미 다른 아이템 때문에 확대된 상태
         if (bagScaleActiveCount > 1)
             return;
-        
+        bagButton.gameObject.SetActive(true);
         bagButton.DOKill();
         
         bagButton.DOScale(bagTargetScale, 0.3f);
@@ -64,12 +80,17 @@ public class InventoryManager : MonoBehaviour
         bagButton.DOScale(1f, 0.3f);
     }
 
+    public bool IsPhotoMax()
+    {
+        return photos.Count >= maxPhoto;
+    }
+
     public void AddPhoto(PhotoData photo)
     {
         photos.Add(photo);
         // UI 프리펩 생성
-        // ui 이미지에 이미지 넣기
-        // 버튼에 zoomphoto 래핑 람다 콜백 넣기
+        var o = Instantiate(photoUIPrefab, photoUIParent);
+        o.GetComponent<PhotoUICell>().Init(photo);
     }
 
     public void AddCollectible(CollectiveEvidence collective)
@@ -104,30 +125,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void ShowPhotos()
-    {
-        // ui parent에 있는 사진들을 펼쳐서 보여주기
-        // scale을 1로, 위치를 격자로
-    }
-
-    public void ZoomPhoto(int i)
-    {
-        // 사진들을 가로로 확대해서 나열하고
-        // 좌우 버튼 활성화
-        // 삭제 버튼 활성화
-    }
-
-    public void ShowLeft()
-    {
-        
-    }
-
-    public void ShowRight()
-    {
-        
-    }
-
-    public void DeletePhoto(int index)
+    public void DeletePhoto(int idx)
     {
         
     }

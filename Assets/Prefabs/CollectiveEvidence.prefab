@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 06efd1bd45554794aae215a911429b82, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ec2eeac9590ad914c847218350bac796, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb6eabb03d174845850ff6c8e24424e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollectiveEvidence
-  sprite: {fileID: 21300000, guid: 06efd1bd45554794aae215a911429b82, type: 3}
-  data: {fileID: 11400000, guid: 01fcbdfc4504218438490094bb70f65e, type: 2}
+  sprite: {fileID: 21300000, guid: ec2eeac9590ad914c847218350bac796, type: 3}
+  data: {fileID: 11400000, guid: 02a6e5114ba28cf4089bf4485081a21a, type: 2}
   moveUpDis: 40
   moveUpDur: 0.4
   moveToBagDur: 0.9

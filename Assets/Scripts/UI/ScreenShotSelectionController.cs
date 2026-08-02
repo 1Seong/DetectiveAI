@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -20,6 +21,7 @@ public class ScreenShotSelectionController :
     [SerializeField] private RawImage croppedImage;
     [SerializeField] private GameObject inputArea;
     [SerializeField] private GameObject resultGroup;
+    [SerializeField] private GameObject exitButton;
     
     [SerializeField] private RectTransform dimTop;
     [SerializeField] private RectTransform dimBottom;
@@ -36,11 +38,13 @@ public class ScreenShotSelectionController :
     [Header("Animation")]
     [SerializeField] private float startScale = 0.8f;
     [SerializeField] private float popDuration = 0.25f;
+    [SerializeField] private float moveToBagDur = 0.7f;
 
     private RectTransform canvasRect;
 
     private Texture2D capturedTexture;
     private Texture2D croppedTexture;
+    private List<EvidenceData> evidences;
 
     private Vector2 dragStart;
     private Vector2 dragEnd;
@@ -62,6 +66,12 @@ public class ScreenShotSelectionController :
 
     public void EnterScreenshotMode()
     {
+        if (InventoryManager.instance.IsPhotoMax())
+        {
+            // TODO : 경고 알림
+            return;
+        }
+        
         EnterScreenshotModeAsync(
             this.GetCancellationTokenOnDestroy()
         ).Forget();
@@ -99,6 +109,7 @@ public class ScreenShotSelectionController :
         croppedImage.gameObject.SetActive(false);
         inputArea.SetActive(true);
         resultGroup.SetActive(false);
+        exitButton.SetActive(true);
         ShowFullDim();
 
         //SetCaptureUIVisible(true);
@@ -199,6 +210,20 @@ public class ScreenShotSelectionController :
             );
         await resultRect.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.InOutSine).ToUniTask(cancellationToken: linkedToken);
         resultGroup.SetActive(true);
+    }
+
+    public void SaveImage()
+    {
+        resultGroup.SetActive(false);
+        exitButton.SetActive(false);
+        InventoryManager.instance.AddPhoto(PhotoDataHelper.CreatePhotoData(croppedTexture, evidences));
+        
+        dimOverlay.gameObject.SetActive(false);
+        var seq = DOTween.Sequence();
+        seq.AppendCallback(InventoryManager.instance.ScaleUpBagButton);
+        seq.Append(croppedImage.transform.DOMove(InventoryManager.instance.GetBagButtonPos(), moveToBagDur).SetEase(Ease.InCubic));
+        seq.Join(croppedImage.transform.DOScale(0f, moveToBagDur).SetEase(Ease.InCubic).OnComplete(ExitScreenshotMode));
+        seq.AppendCallback(InventoryManager.instance.ScaleDownBagButton);
     }
 
     private void CreateCroppedTexture(Rect selectedRect)
@@ -487,6 +512,7 @@ public class ScreenShotSelectionController :
 
         Destroy(croppedTexture);
         croppedTexture = null;
+        evidences = null;
     }
 
     private void OnDestroy()
