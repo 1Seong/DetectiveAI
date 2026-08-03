@@ -17,16 +17,6 @@ public class PhotoUICell : MonoBehaviour
 
     public void ZoomIn()
     {
-        
-    }
-
-    public void ZoomOut()
-    {
-        
-    }
-
-    public void DeletePhoto()
-    {
-        
+        InventoryManager.instance.ZoomInPhoto(transform.GetSiblingIndex());
     }
 }

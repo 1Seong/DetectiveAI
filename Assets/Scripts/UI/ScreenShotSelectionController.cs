@@ -22,6 +22,7 @@ public class ScreenShotSelectionController :
     [SerializeField] private GameObject inputArea;
     [SerializeField] private GameObject resultGroup;
     [SerializeField] private GameObject exitButton;
+    [SerializeField] private GameObject photoSpotParent;
     
     [SerializeField] private RectTransform dimTop;
     [SerializeField] private RectTransform dimBottom;
@@ -44,7 +45,7 @@ public class ScreenShotSelectionController :
 
     private Texture2D capturedTexture;
     private Texture2D croppedTexture;
-    private List<EvidenceData> evidences;
+    private List<EvidenceData> evidences = new();
 
     private Vector2 dragStart;
     private Vector2 dragEnd;
@@ -54,6 +55,8 @@ public class ScreenShotSelectionController :
 
     private CancellationTokenSource animationCts;
 
+    private Transform[] evidenceObjects;
+
     private void Awake()
     {
         canvasRect = screenshotCanvas.transform as RectTransform;
@@ -62,6 +65,8 @@ public class ScreenShotSelectionController :
         selectionArea.gameObject.SetActive(false);
         dimOverlay.gameObject.SetActive(false);
         croppedImage.gameObject.SetActive(false);
+
+        evidenceObjects = photoSpotParent.GetComponentsInChildren<Transform>();
     }
 
     public void EnterScreenshotMode()
@@ -170,6 +175,7 @@ public class ScreenShotSelectionController :
         Rect selectedRect)
     {
         CreateCroppedTexture(selectedRect);
+        CaptureObjects(selectedRect);
 
         animationCts = new CancellationTokenSource();
 
@@ -210,6 +216,19 @@ public class ScreenShotSelectionController :
             );
         await resultRect.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.InOutSine).ToUniTask(cancellationToken: linkedToken);
         resultGroup.SetActive(true);
+    }
+
+    private void CaptureObjects(Rect rect)
+    {
+        for(int i = 1; i != evidenceObjects.Length; ++i)
+        {
+            var o = evidenceObjects[i];
+            if (o.position.x >= rect.min.x && o.position.x <= rect.max.x && o.position.y >= rect.min.y &&
+                o.position.y <= rect.max.y)
+            {
+                evidences.Add(o.GetComponent<EvidenceObject>().data);
+            }
+        }
     }
 
     public void SaveImage()
@@ -512,7 +531,7 @@ public class ScreenShotSelectionController :
 
         Destroy(croppedTexture);
         croppedTexture = null;
-        evidences = null;
+        evidences.Clear();
     }
 
     private void OnDestroy()

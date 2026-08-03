@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,11 @@ public class InventoryManager : MonoBehaviour
     [Header("PhotoUI")]
     [SerializeField] private Transform photoUIParent;
     [SerializeField] private GameObject photoUIPrefab;
+    [SerializeField] private GameObject zoomPanel;
+    [SerializeField] private Image zoomBackground;
+    [SerializeField] private RawImage zoomRawImg;
+    [SerializeField] private GameObject[] zoomPanelButtons;
+    [SerializeField] private float dissolveDuration = 0.4f;
     
     [Header("ItemUI")]
     [SerializeField] private Transform collectiveUIParent;
@@ -33,8 +39,8 @@ public class InventoryManager : MonoBehaviour
             instance = this;
     }
 
-    private List<PhotoData> photos =  new List<PhotoData>();
-    private List<CollectiveEvidence> collectives = new List<CollectiveEvidence>();
+    [SerializeField] private List<PhotoData> photos =  new List<PhotoData>();
+    [SerializeField] private List<CollectiveEvidence> collectives = new List<CollectiveEvidence>();
     private void OnDestroy()
     {
         foreach (var i in photos)
@@ -53,6 +59,7 @@ public class InventoryManager : MonoBehaviour
     public Vector3 GetBagButtonPos() => bagButton.position;
 
     [SerializeField] private int bagScaleActiveCount = 0;
+    private int currentPhotoIdx = 0;
 
     public void ScaleUpBagButton()
     {
@@ -93,6 +100,69 @@ public class InventoryManager : MonoBehaviour
         o.GetComponent<PhotoUICell>().Init(photo);
     }
 
+    public void ZoomInPhoto(int idx)
+    {
+        currentPhotoIdx = idx;
+        zoomRawImg.texture = photos[idx].tex;
+        zoomRawImg.SetNativeSize();
+        foreach (var i in zoomPanelButtons)
+            i.SetActive(true);
+        zoomPanel.SetActive(true);
+        zoomRawImg.transform.DOScale(0.85f, 0f);
+        zoomRawImg.transform.DOScale(1f, 0.3f).SetEase(Ease.OutBack);
+        zoomBackground.DOFade(0f, 0f);
+        zoomBackground.DOFade(250.0f / 255f, 0.3f);
+    }
+
+    public void ZoomOutPhoto()
+    {
+        zoomPanel.SetActive(false);
+    }
+    
+    public void DeletePhoto()
+    {
+        DeletePhotoAsync().Forget();
+    }
+
+    public async UniTaskVoid DeletePhotoAsync()
+    {
+        int DissolveAmountId = Shader.PropertyToID("_Progress");
+        int RectSizeId = Shader.PropertyToID("_RectSize");
+        var dissolveMaterial = zoomRawImg.material;
+        var rect = zoomRawImg.rectTransform.rect;
+        dissolveMaterial.SetFloat(DissolveAmountId, 0f);
+        dissolveMaterial.SetVector(
+            RectSizeId,
+            new Vector4(
+                rect.width,
+                rect.height,
+                0f,
+                0f
+            )
+        );
+        foreach (var i in zoomPanelButtons)
+            i.SetActive(false);
+        await DOTween.To(
+            () => dissolveMaterial.GetFloat(DissolveAmountId),
+            value => dissolveMaterial.SetFloat(DissolveAmountId, value),
+            1.05f,
+            dissolveDuration
+        ).ToUniTask();
+        await zoomBackground.DOFade(0f, 0.3f).ToUniTask();
+        
+        int idx = currentPhotoIdx;
+        zoomPanel.SetActive(false);
+        if (photos[idx].tex != null)
+        {
+            Destroy(photos[idx].tex);
+            photos[idx].tex = null;
+        }
+        photos.RemoveAt(idx);
+        Destroy(photoUIParent.transform.GetChild(idx).gameObject);
+        
+        dissolveMaterial.SetFloat(DissolveAmountId, 0f);
+    }
+
     public void AddCollectible(CollectiveEvidence collective)
     {
         collectives.Add(collective);
@@ -123,10 +193,5 @@ public class InventoryManager : MonoBehaviour
             inventoryParent.SetActive(true);
             background.DOFade(250.0f / 255f, 0.3f).OnComplete(() => isInventoryOpening = false);
         }
-    }
-
-    public void DeletePhoto(int idx)
-    {
-        
     }
 }
