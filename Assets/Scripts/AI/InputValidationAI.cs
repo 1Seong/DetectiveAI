@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 [Serializable]
 public class EvidenceValidationInput
@@ -43,67 +42,20 @@ public class EvidenceValidationResult
 
 public class InputValidationAI
 {
-    private readonly OpenAIClient client;
-    
-    private readonly string InputValidationInstructions;
+    private readonly AIEdgeFunctionClient client;
 
-    public InputValidationAI(
-        OpenAIClient client,
-        string inputValidationInstructions)
+    public InputValidationAI(AIEdgeFunctionClient client)
     {
         this.client = client;
-        this.InputValidationInstructions = inputValidationInstructions;
     }
 
-    public async UniTask<EvidenceValidationResult> ValidateAsync(
+    public UniTask<EvidenceValidationResult> ValidateAsync(
         EvidenceValidationInput input,
         CancellationToken cancellationToken = default)
     {
-        string requestJson =
-            OpenAIRequestBuilder.BuildStructuredRequest(
-                model: "gpt-5.4-nano",
-                instructions: InputValidationInstructions,
-                inputData: input,
-                effort: "none",
-                max_output_tokens: 300,
-                verbosity: "low",
-                schemaName: "evidence_validation_result",
-                schema: CreateValidationSchema());
-        
-        string responseJson =
-            await client.SendAsync(
-                requestJson,
-                cancellationToken);
-        
-        var r = OpenAIResponseParser
-            .ParseStructuredOutput<EvidenceValidationResult>(
-                responseJson);
-        return r;
-    }
-    
-    public static JObject CreateValidationSchema()
-    {
-        return new JObject
-        {
-            ["type"] = "object",
-            ["properties"] = new JObject
-            {
-                ["status"] = new JObject
-                {
-                    ["type"] = "string",
-                    ["enum"] = new JArray(
-                        "Accept",
-                        "RequestClarification")
-                },
-                ["response"] = new JObject
-                {
-                    ["type"] = "string"
-                },
-            },
-            ["required"] = new JArray(
-                "status",
-                "response"),
-            ["additionalProperties"] = false
-        };
+        return client.InvokeAsync<EvidenceValidationResult>(
+            "validate",
+            input,
+            cancellationToken);
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 [Serializable]
 public class EvidenceRecord
@@ -41,87 +40,21 @@ public class FinalDeductionResult
 
 public class DetectiveAI
 {
-    private readonly OpenAIClient client;
-    private readonly string DetectiveInstructions;
+    private readonly AIEdgeFunctionClient client;
 
-    public DetectiveAI(
-        OpenAIClient client,
-        string detectiveInstructions)
+    public DetectiveAI(AIEdgeFunctionClient client)
     {
         this.client = client;
-        this.DetectiveInstructions = detectiveInstructions;
     }
 
-    public async UniTask<FinalDeductionResult> DeduceAsync(
+    public UniTask<FinalDeductionResult> DeduceAsync(
         FinalDeductionInput input,
         CancellationToken cancellationToken = default)
     {
-        string requestJson =
-            OpenAIRequestBuilder.BuildStructuredRequest(
-                "gpt-5.4-mini",
-                DetectiveInstructions,
-                input,
-                effort: "low",
-                max_output_tokens: 800,
-                verbosity: "medium",
-                "final_deduction_result",
-                CreateFinalDeductionSchema());
-
-        string responseJson =
-            await client.SendAsync(
-                requestJson,
-                cancellationToken);
-
-        return OpenAIResponseParser
-            .ParseStructuredOutput<FinalDeductionResult>(
-                responseJson);
-    }
-    
-    public static JObject CreateFinalDeductionSchema()
-    {
-        return new JObject
-        {
-            ["type"] = "object",
-            ["properties"] = new JObject
-            {
-                ["narrative"] = StringSchema(),
-                ["culprit"] = StringSchema(),
-                ["method"] = StringSchema(),
-                ["motive"] = StringSchema(),
-                ["reasoningPoints"] = new JObject
-                {
-                    ["type"] = "array",
-                    ["items"] = new JObject
-                    {
-                        ["type"] = "string"
-                    }
-                }
-            },
-            ["required"] = new JArray(
-                "narrative",
-                "culprit",
-                "method",
-                "motive",
-                "reasoningPoints"),
-            ["additionalProperties"] = false
-        };
-    }
-
-    private static JObject StringSchema()
-    {
-        return new JObject
-        {
-            ["type"] = "string"
-        };
-    }
-
-    private static JObject StringArraySchema()
-    {
-        return new JObject
-        {
-            ["type"] = "array",
-            ["items"] = StringSchema()
-        };
+        return client.InvokeAsync<FinalDeductionResult>(
+            "deduce",
+            input,
+            cancellationToken);
     }
 }
 

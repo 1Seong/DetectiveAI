@@ -1,32 +1,21 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class OriginalEvidenceRecord
+{
+    public List<PhotoData> photos;
+    public List<CollectiveEvidence> collectiveEvidences;
+    public string playerDescription;
+}
+
 public class EvidenceRecorder : MonoBehaviour
 {
-    private List<PhotoData> photos;
-    private List<CollectiveEvidence> collectiveEvidences;
-    private List<EvidenceRecord>  evidenceRecords;
+    private List<OriginalEvidenceRecord> originalEvidenceRecords = new();
 
-    public void SavePhotos(List<PhotoData> datas)
+    public void AddRecord(OriginalEvidenceRecord record)
     {
-        photos.AddRange(datas);
-    }
-
-    public void SaveCollectiveEvidence(List<CollectiveEvidence> datas)
-    {
-        collectiveEvidences.AddRange(datas);
-    }
-
-    public void FinalDeduction()
-    {
-        
-    }
-
-    private FinalDeductionInput buildFinalDeductionInput()
-    {
-        return new FinalDeductionInput()
-        {
-            
-        };
+        originalEvidenceRecords.AddRange(originalEvidenceRecords);
     }
 }

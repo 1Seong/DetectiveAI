@@ -6,13 +6,12 @@ public class AISystemManager : MonoBehaviour
 
     public AISystem AI { get; private set; }
 
-    [Header("OpenAI")]
+    [Header("Supabase")]
     [SerializeField] private KeyData keyData;
-    [SerializeField] private KeyData inputValidationInstruction;
-    [SerializeField] private KeyData detectiveInstruction;
-    [SerializeField] private KeyData evaluationInstruction;
+
+    [SerializeField] private string url = "https://twbxebfidwkaukodqcus.supabase.co";
     
-    private OpenAIClient openAIClient;
+    private AIEdgeFunctionClient edgeFunctionClient;
 
     private void Awake()
     {
@@ -33,12 +32,9 @@ public class AISystemManager : MonoBehaviour
         if (keyData == null || string.IsNullOrEmpty(keyData.key)) return;
         string apiKey = keyData.key;
 
-        openAIClient = new OpenAIClient(apiKey);
-
-        AI = new AISystem(
-            openAIClient,
-            inputValidationInstruction.key,
-            detectiveInstruction.key,
-            evaluationInstruction.key);
+        edgeFunctionClient = new AIEdgeFunctionClient(url, keyData.key);
+        Debug.Log("edgeFunctionClient 생성");
+        AI = new AISystem(edgeFunctionClient);
+        Debug.Log("AISystem 생성");
     }
 }

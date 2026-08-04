@@ -6,19 +6,10 @@ public class AISystem
     public DetectiveAI Detective { get; }
     public DeductionEvaluationAI Evaluator { get; }
 
-    public AISystem(
-        OpenAIClient client,
-        string inputValidationInstruction,
-        string detectiveInstruction,
-        string evaluationInstruction)
+    public AISystem(AIEdgeFunctionClient client)
     {
-        InputValidator =
-            new InputValidationAI(client, inputValidationInstruction);
-
-        Detective =
-            new DetectiveAI(client, detectiveInstruction);
-
-        Evaluator =
-            new DeductionEvaluationAI(client, evaluationInstruction);
+        InputValidator = new InputValidationAI(client);
+        Detective = new DetectiveAI(client);
+        Evaluator = new DeductionEvaluationAI(client);
     }
 }
