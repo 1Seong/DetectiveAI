@@ -33,14 +33,31 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject collectiveUIPrefab;
     public TMP_Text nameText;
     
+    [Header("SoundUI")]
+    [SerializeField] private Transform soundUIParent;
+    [SerializeField] private GameObject soundUIPrefab;
+    [SerializeField] private SoundController soundController;
+    [SerializeField] private GameObject[] hideObjects;
+    [SerializeField] private GameObject exitSoundButton;
+    [SerializeField] private GameObject soundNoneArea;
+    [SerializeField] private TMP_Text parrotText;
+    [SerializeField] private Image parrotImg;
+    [SerializeField] private Sprite normalParrot;
+    [SerializeField] private Sprite sadParrot;
+    [SerializeField] private Transform soundObjectParent;
+    private Button[] soundObjects;
+    
     void Awake()
     {
         if (instance == null)
             instance = this;
+
+        soundObjects = soundObjectParent.GetComponentsInChildren<Button>();
     }
 
     [SerializeField] private List<PhotoData> photos =  new List<PhotoData>();
     [SerializeField] private List<CollectiveEvidence> collectives = new List<CollectiveEvidence>();
+    [SerializeField] private List<SoundSource> soundSources = new List<SoundSource>();
     private void OnDestroy()
     {
         foreach (var i in photos)
@@ -169,6 +186,50 @@ public class InventoryManager : MonoBehaviour
         // UI 프리펩 생성
         var o = Instantiate(collectiveUIPrefab, collectiveUIParent);
         o.GetComponent<CollectiveUICell>().Init(collective);
+    }
+
+    public void EnterSoundMode()
+    {
+        parrotText.text = "기억할 소리를 선택하세요";
+        parrotImg.sprite = normalParrot;
+        soundNoneArea.SetActive(true);
+        exitSoundButton.SetActive(true);
+        foreach(var o in hideObjects)
+            o.SetActive(false);
+        foreach (var b in soundObjects)
+            b.enabled = true;
+    }
+
+    public void ExitSoundMode()
+    {
+        soundNoneArea.SetActive(false);
+        exitSoundButton.SetActive(false);
+        foreach(var o in hideObjects)
+            o.SetActive(true);
+        foreach (var b in soundObjects)
+            b.enabled = false;
+    }
+
+    public void AddSound(SoundSource sound)
+    {
+        soundSources.Add(sound);
+        
+        var o = Instantiate(soundUIPrefab, soundUIParent);
+        o.GetComponent<SoundUICell>().Init(sound);
+        soundController.CollectSound(sound);
+        parrotText.text = "기억할 소리를 선택하세요";
+        parrotImg.sprite = normalParrot;
+    }
+
+    public void OpenSound(SoundSource sound)
+    {
+        soundController.OpenSound(sound);
+    }
+
+    public void ClickNonSound()
+    {
+        parrotText.text = "거기엔 아무 소리도 들리지 않아요...";
+        parrotImg.sprite = sadParrot;
     }
 
     public void ToggleInventory()
