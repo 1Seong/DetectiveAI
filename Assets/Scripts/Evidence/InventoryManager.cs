@@ -44,15 +44,12 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Image parrotImg;
     [SerializeField] private Sprite normalParrot;
     [SerializeField] private Sprite sadParrot;
-    [SerializeField] private Transform soundObjectParent;
-    private Button[] soundObjects;
+    private List<Button> soundObjects = new();
     
     void Awake()
     {
         if (instance == null)
             instance = this;
-
-        soundObjects = soundObjectParent.GetComponentsInChildren<Button>();
     }
 
     [SerializeField] private List<PhotoData> photos =  new List<PhotoData>();
@@ -103,7 +100,8 @@ public class InventoryManager : MonoBehaviour
         
         bagButton.DOScale(1f, 0.3f);
     }
-
+    
+    #region Photo
     public bool IsPhotoMax()
     {
         return photos.Count >= maxPhoto;
@@ -179,6 +177,7 @@ public class InventoryManager : MonoBehaviour
         
         dissolveMaterial.SetFloat(DissolveAmountId, 0f);
     }
+    #endregion
 
     public void AddCollectible(CollectiveEvidence collective)
     {
@@ -186,6 +185,17 @@ public class InventoryManager : MonoBehaviour
         // UI 프리펩 생성
         var o = Instantiate(collectiveUIPrefab, collectiveUIParent);
         o.GetComponent<CollectiveUICell>().Init(collective);
+    }
+    
+    #region Audio
+    public void AddSoundButton(Button b)
+    {
+        soundObjects.Add(b);
+    }
+
+    public void DeleteSoundButton(Button b)
+    {
+        soundObjects.Remove(b);
     }
 
     public void EnterSoundMode()
@@ -231,6 +241,7 @@ public class InventoryManager : MonoBehaviour
         parrotText.text = "거기엔 아무 소리도 들리지 않아요...";
         parrotImg.sprite = sadParrot;
     }
+    #endregion
 
     public void ToggleInventory()
     {
