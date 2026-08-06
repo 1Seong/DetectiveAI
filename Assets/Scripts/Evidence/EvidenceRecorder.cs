@@ -7,6 +7,7 @@ public class OriginalEvidenceRecord
 {
     public List<PhotoData> photos;
     public List<CollectiveEvidence> collectiveEvidences;
+    public List<SoundSource> audios;
     public string playerDescription;
 }
 

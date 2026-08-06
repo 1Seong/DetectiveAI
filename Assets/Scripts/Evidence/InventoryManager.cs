@@ -18,6 +18,12 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private int maxPhoto = 10;
     private bool isInventoryOpened = false;
     private bool isInventoryOpening = false;
+    [SerializeField] private GameObject deductionItemCellPrefab;
+    [SerializeField] private GameObject deductionPhotoCellPrefab;
+    [SerializeField] private GameObject deductionAudioCellPrefab;
+    [SerializeField] private Transform deductionItemParent;
+    [SerializeField] private Transform deductionPhotoParent;
+    [SerializeField] private Transform deductionAudioParent;
     
     [Header("PhotoUI")]
     [SerializeField] private Transform photoUIParent;
@@ -68,6 +74,8 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+
+        instance = null;
     }
     
     public Vector3 GetBagButtonPos() => bagButton.position;
@@ -113,6 +121,8 @@ public class InventoryManager : MonoBehaviour
         // UI 프리펩 생성
         var o = Instantiate(photoUIPrefab, photoUIParent);
         o.GetComponent<PhotoUICell>().Init(photo);
+        var o1 = Instantiate(deductionPhotoCellPrefab, deductionPhotoParent);
+        o1.GetComponent<SubmitPhotoUICell>().Init(photo);
     }
 
     public void ZoomInPhoto(int idx)
@@ -174,6 +184,7 @@ public class InventoryManager : MonoBehaviour
         }
         photos.RemoveAt(idx);
         Destroy(photoUIParent.transform.GetChild(idx).gameObject);
+        Destroy(deductionPhotoParent.transform.GetChild(idx).gameObject);
         
         dissolveMaterial.SetFloat(DissolveAmountId, 0f);
     }
@@ -185,6 +196,8 @@ public class InventoryManager : MonoBehaviour
         // UI 프리펩 생성
         var o = Instantiate(collectiveUIPrefab, collectiveUIParent);
         o.GetComponent<CollectiveUICell>().Init(collective);
+        var o1 = Instantiate(deductionItemCellPrefab, deductionItemParent);
+        o1.GetComponent<SubmitItemUICell>().Init(collective);
     }
     
     #region Audio
@@ -227,6 +240,8 @@ public class InventoryManager : MonoBehaviour
         var o = Instantiate(soundUIPrefab, soundUIParent);
         o.GetComponent<SoundUICell>().Init(sound);
         soundController.CollectSound(sound);
+        var o1 = Instantiate(deductionAudioCellPrefab, deductionAudioParent);
+        o1.GetComponent<SubmitAudioUICell>().Init(sound);
         parrotText.text = "기억할 소리를 선택하세요";
         parrotImg.sprite = normalParrot;
     }

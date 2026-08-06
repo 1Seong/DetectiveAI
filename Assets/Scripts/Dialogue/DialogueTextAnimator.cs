@@ -13,17 +13,17 @@ public class DialogueTextAnimator : MonoBehaviour
 
     [Header("Typing")]
     [SerializeField, Min(0f)]
-    private float characterInterval = 0.04f;
+    private float characterInterval = 0.07f;
 
     [Header("Character Animation")]
     [SerializeField, Min(0f)]
-    private float animationDuration = 0.2f;
+    private float animationDuration = 0.4f;
 
     [SerializeField]
     private float startYOffset = -20f;
 
     [SerializeField]
-    private Ease moveEase = Ease.OutCubic;
+    private Ease moveEase = Ease.OutBack;
 
     private CancellationToken destroyCancellationToken;
 

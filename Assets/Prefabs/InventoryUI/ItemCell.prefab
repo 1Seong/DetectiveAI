@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2bca15defe13914bb818e8568f2d1c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollectiveUICell
-  targetScale: 1.25
+  targetScale: 1
   data: {fileID: 0}
 --- !u!1 &9085228418095835170
 GameObject:

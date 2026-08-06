@@ -7,6 +7,8 @@ public class DialogueAnimTester : MonoBehaviour
     [SerializeField]
     private DialogueTextAnimator textAnimator;
 
+    [SerializeField] private GameObject img;
+
     private async UniTaskVoid Start()
     {
         List<string> dialogues = new List<string>
@@ -23,6 +25,8 @@ public class DialogueAnimTester : MonoBehaviour
             // 전체 표시 후 Space: 함수 종료 및 다음 대사 진행
             await textAnimator.PlayDialogueAsync(dialogue);
         }
+        
+        img.SetActive(true);
 
         Debug.Log("모든 대사가 종료되었습니다.");
     }
