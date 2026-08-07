@@ -78,6 +78,9 @@ public class ScreenShotSelectionController :
             return;
         }
         
+        GameManager.Instance.CanUseInventory = false;
+        GameManager.Instance.CanUseOption = false;
+        
         EnterScreenshotModeAsync(
             this.GetCancellationTokenOnDestroy()
         ).Forget();
@@ -451,6 +454,9 @@ public class ScreenShotSelectionController :
 
         isCaptureMode = false;
         isDragging = false;
+        
+        GameManager.Instance.CanUseInventory = true;
+        GameManager.Instance.CanUseOption = true;
 
         CancelCurrentAnimation();
 

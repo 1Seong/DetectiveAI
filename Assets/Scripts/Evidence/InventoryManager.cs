@@ -239,6 +239,8 @@ public class InventoryManager : MonoBehaviour
 
     public void EnterSoundMode()
     {
+        GameManager.Instance.CanUseInventory = false;
+        GameManager.Instance.CanUseOption = false;
         parrotText.text = "기억할 소리를 선택하세요";
         parrotImg.sprite = normalParrot;
         soundNoneArea.SetActive(true);
@@ -251,6 +253,8 @@ public class InventoryManager : MonoBehaviour
 
     public void ExitSoundMode()
     {
+        GameManager.Instance.CanUseInventory = true;
+        GameManager.Instance.CanUseOption = true;
         soundNoneArea.SetActive(false);
         exitSoundButton.SetActive(false);
         foreach(var o in hideObjects)
@@ -284,6 +288,14 @@ public class InventoryManager : MonoBehaviour
     }
     #endregion
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab) && GameManager.Instance.CanUseInventory)
+        {
+            ToggleInventory();
+        }
+    }
+
     public void ToggleInventory()
     {
         if (isInventoryOpening) return;
@@ -291,6 +303,7 @@ public class InventoryManager : MonoBehaviour
         
         if (isInventoryOpened)
         {
+            GameManager.Instance.CanUseOption = true;
             isInventoryOpened = false;
             inventoryParent.SetActive(false);
             background.DOFade(0f, 0.3f).OnComplete(()=>
@@ -301,6 +314,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.CanUseOption = false;
             isInventoryOpened = true;
             background.gameObject.SetActive(true);
             inventoryParent.SetActive(true);

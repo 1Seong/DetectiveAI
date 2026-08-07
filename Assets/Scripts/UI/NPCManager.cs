@@ -76,8 +76,11 @@ public class NPCManager : MonoBehaviour
         instance = null;
     }
 
-    public async UniTask PlayDialogue(List<string> dialogue, Sprite sprite, String name)
+    public async UniTask PlayDialogue(List<string> dialogue, Sprite sprite, String name, bool isNpcDialogue = false)
     {
+        GameManager.Instance.CanUseInventory = false;
+        GameManager.Instance.CanUseOption = false;
+        
         backgroundTween?.Kill();
         background.gameObject.SetActive(true);
         background.DOFade(250.0f / 255f, 0.3f);
@@ -93,10 +96,19 @@ public class NPCManager : MonoBehaviour
         }
         dialoguePanel.SetActive(false);
         backgroundTween = background.DOFade(0f, 0.3f).OnComplete(()=>background.gameObject.SetActive(false));
+
+        if (isNpcDialogue)
+        {
+            GameManager.Instance.CanUseInventory = true;
+            GameManager.Instance.CanUseOption = true;
+        }
     }
 
     public void AskDeduction()
     {
+        GameManager.Instance.CanUseInventory = false;
+        GameManager.Instance.CanUseOption = false;
+        
         EventSystem.current?.SetSelectedGameObject(null);
         AskDeductionAsync().Forget();
     }
@@ -111,6 +123,15 @@ public class NPCManager : MonoBehaviour
 
         await PlayDialogue(dialogue, clientSprite, clientName);
         ShowConfirmPanel();
+    }
+
+    public void CloseConfirmPanel()
+    {
+        confirmPanel.SetActive(false);
+        confirmBackground.gameObject.SetActive(false);
+        
+        GameManager.Instance.CanUseInventory = true;
+        GameManager.Instance.CanUseOption = true;
     }
 
     private void ShowConfirmPanel()
@@ -142,6 +163,9 @@ public class NPCManager : MonoBehaviour
     {
         foreach(var o in step1Objects)
             o.SetActive(false);
+        
+        GameManager.Instance.CanUseInventory = true;
+        GameManager.Instance.CanUseOption = true;
         
         background.DOFade(0f, 0.3f).OnComplete(()=>background.gameObject.SetActive(false));
     }

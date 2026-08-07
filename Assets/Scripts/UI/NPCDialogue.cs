@@ -10,6 +10,6 @@ public class NPCDialogue : MonoBehaviour
     {
         EventSystem.current?.SetSelectedGameObject(null);
         BookManager.Instance.Unlock(data.NPCName);
-        NPCManager.instance.PlayDialogue(data.Dialogues, data.sprite, data.NPCName).Forget();
+        NPCManager.instance.PlayDialogue(data.Dialogues, data.sprite, data.NPCName, true).Forget();
     }
 }
