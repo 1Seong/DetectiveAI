@@ -53,6 +53,9 @@ public class DialogueTextAnimator : MonoBehaviour
     /// 대사를 출력하고, 전체 출력 이후 다음 Space 입력까지 기다립니다.
     /// 함수가 종료되면 다음 대사를 출력해도 됩니다.
     /// </summary>
+    [SerializeField, Min(0f)]
+    private float autoAdvanceDelay = 3f;
+
     public async UniTask PlayDialogueAsync(
         string dialogue,
         CancellationToken cancellationToken = default)
@@ -67,23 +70,39 @@ public class DialogueTextAnimator : MonoBehaviour
 
         await RevealTextAsync(dialogue, token);
 
-        // 전체 출력과 동시에 눌린 입력이 다음 대사 넘김으로 사용되지 않게 함
+        // 전체 출력과 동시에 눌린 입력이 다음 대사로 사용되지 않게 함
         await UniTask.Yield(PlayerLoopTiming.Update, token);
 
-        // 전체 대사가 표시된 상태에서 다음 스페이스 입력 대기
+        bool advancedBySpace = false;
+        float autoAdvanceTime = Time.unscaledTime + autoAdvanceDelay;
+
+        // 스페이스 입력 또는 자동 진행 시간까지 대기
         await UniTask.WaitUntil(
-            () => Input.GetKeyDown(KeyCode.Space),
-            cancellationToken: token
+            () =>
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    advancedBySpace = true;
+                    return true;
+                }
+
+                return Time.unscaledTime >= autoAdvanceTime;
+            },
+            PlayerLoopTiming.Update,
+            token
         );
 
-        // 방금 누른 스페이스가 완전히 해제될 때까지 대기
-        await UniTask.WaitUntil(
-            () => !Input.GetKey(KeyCode.Space),
-            cancellationToken: token
-        );
+        // 스페이스 입력으로 넘어간 경우에만 키가 해제될 때까지 대기
+        if (advancedBySpace)
+        {
+            await UniTask.WaitUntil(
+                () => !Input.GetKey(KeyCode.Space),
+                PlayerLoopTiming.Update,
+                token
+            );
 
-        // 입력 해제 프레임까지 다음 대사로 전달되지 않도록 한 프레임 추가 대기
-        await UniTask.Yield(PlayerLoopTiming.Update, token);
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
+        }
     }
 
     /// <summary>
