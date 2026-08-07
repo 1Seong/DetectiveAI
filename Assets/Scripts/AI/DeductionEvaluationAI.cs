@@ -14,34 +14,15 @@ public class DeductionEvaluationInput
 public class DeductionEvaluationResult
 {
     public float culpritScore;
-    public float methodScore;
     public float motiveScore;
-    public float keyPointScore;
-
-    public List<string> matchedPoints;
+    public float sceneScore;
+    public float timeScore;
+    public float accessMethodScore;
+    public float coreActionScore;
+    public float originalStatusScore;
+    public float copyDestinationScore;
+    public float tasteGapReasonScore;
     public List<string> detectedMisleadingClaims;
-    
-    public override string ToString()
-    {
-        string matchedPointsText =
-            matchedPoints == null || matchedPoints.Count == 0
-                ? "없음"
-                : "- " + string.Join("\n- ", matchedPoints);
-
-        string misleadingClaimsText =
-            detectedMisleadingClaims == null ||
-            detectedMisleadingClaims.Count == 0
-                ? "없음"
-                : "- " + string.Join("\n- ", detectedMisleadingClaims);
-
-        return
-            $"Culprit Score: {culpritScore:F2}\n" +
-            $"Method Score: {methodScore:F2}\n" +
-            $"Motive Score: {motiveScore:F2}\n" +
-            $"Key Point Score: {keyPointScore:F2}\n" +
-            $"Matched Points:\n{matchedPointsText}\n" +
-            $"Detected Misleading Claims:\n{misleadingClaimsText}";
-    }
 }
  
 public class DeductionEvaluationAI

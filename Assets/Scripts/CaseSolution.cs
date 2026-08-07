@@ -15,9 +15,13 @@ public class MisleadingClaim
 public class CaseSolution : ScriptableObject
 {
     public string culprit;
-    public string method;
     public string motive;
-
-    public List<string> keyPoints;
+    public string scene;
+    public string time;
+    public string accessMethod;
+    public string coreAction;
+    public string originalStatus;
+    public string copyDestination;
+    public string tasteGapReason;
     public List<MisleadingClaim> misleadingClaims;
 }

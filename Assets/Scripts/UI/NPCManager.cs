@@ -297,9 +297,15 @@ public class NPCManager : MonoBehaviour
         };
         await PlayDialogue(s, monkeySprite, "탐정");
 
-        deductionResultText.text = "범인 : " + deductionOutput.culprit + "\n" +
-                                   "동기 : " + deductionOutput.motive + "\n" +
-                                   "수법 : " + deductionOutput.method;
+        deductionResultText.text = "범인 : " + deductionOutput.culprit + "\n" + "\n" +
+                                   "동기 : " + deductionOutput.motive + "\n" + "\n" +
+                                   "수법 : " + deductionOutput.scene + "\n" +
+                                   deductionOutput.time + "\n" +
+                                   deductionOutput.accessMethod + "\n" +
+                                   deductionOutput.coreAction + "\n" +
+                                   deductionOutput.originalStatus + "\n" +
+                                   deductionOutput.copyDestination + "\n" +
+                                   deductionOutput.tasteGapReason + "\n";
         // TODO : 출력 형식 수정
         deductionResultBackground.gameObject.SetActive(true);
         deductionResultBackground.DOFade(0f, 0f);
@@ -356,7 +362,10 @@ public class NPCManager : MonoBehaviour
         resultCanvas.gameObject.SetActive(true);
         resultBackground.DOFade(0f, 0f);
         resultBackground.DOFade(250.0f / 255f, 0.3f);
-        resultText.text = score.ToString() + " 점 / 3 점"; // TODO : 총점 수정
+        float sum = 0;
+        foreach (var i in evaluationWeights)
+            sum += i;
+        resultText.text = score.ToString() + " 점 / " + sum.ToString() + " 점";
         resultSticker.sprite = sticker;
         resultSticker.SetNativeSize();
     }
@@ -366,8 +375,13 @@ public class NPCManager : MonoBehaviour
         float sum = 0;
         sum += result.culpritScore * evaluationWeights[0];
         sum += result.motiveScore * evaluationWeights[1];
-        sum += result.methodScore * evaluationWeights[2];
-        // TODO : 계산식 수정
+        sum += result.sceneScore * evaluationWeights[2];
+        sum += result.timeScore * evaluationWeights[3];
+        sum += result.accessMethodScore * evaluationWeights[4];
+        sum += result.coreActionScore * evaluationWeights[5];
+        sum += result.originalStatusScore * evaluationWeights[6];
+        sum += result.copyDestinationScore * evaluationWeights[7];
+        sum += result.tasteGapReasonScore * evaluationWeights[8];
         return sum;
     }
     

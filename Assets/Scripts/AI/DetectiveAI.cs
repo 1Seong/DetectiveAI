@@ -22,19 +22,18 @@ public class FinalDeductionResult
 {
     public string narrative;
     public string culprit;
-    public string method;
     public string motive;
-
-    public List<string> reasoningPoints;
+    public string scene;
+    public string time;
+    public string accessMethod;
+    public string coreAction;
+    public string originalStatus;
+    public string copyDestination;
+    public string tasteGapReason;
 
     public override string ToString()
     {
-        string reasoningPointsText =
-            reasoningPoints == null || reasoningPoints.Count == 0
-                ? "없음"
-                : string.Join("\n- ", reasoningPoints);
-        
-        return $"대사: {narrative}\n범인: {culprit}\n수법: {method}\n동기: {motive}\n추론포인트: {reasoningPointsText}";
+        return $"대사: {narrative}\n범인: {culprit}\n동기: {motive}";
     }
 }
 
