@@ -53,6 +53,27 @@ public class SceneTransitionManager : MonoBehaviour
         if (fadeInOnStart)
             FadeInAsync(destroyCancellationToken).Forget();
     }
+    
+    public async UniTask FadeOutInAsync(
+        CancellationToken cancellationToken = default)
+    {
+        if (IsTransitioning)
+            return;
+
+        IsTransitioning = true;
+        fadeCanvasGroup.blocksRaycasts = true;
+        
+        await FadeOutAsync(cancellationToken);
+        
+        // 새 씬의 첫 프레임 초기화 이후 암전을 해제합니다.
+        await UniTask.Yield(PlayerLoopTiming.LastPostLateUpdate,
+            cancellationToken);
+
+        await FadeInAsync(cancellationToken);
+  
+        fadeCanvasGroup.blocksRaycasts = false;
+        IsTransitioning = false;
+    }
 
     /// <summary>
     /// 씬 이름으로 전환합니다.
@@ -86,9 +107,12 @@ public class SceneTransitionManager : MonoBehaviour
 
             await operation.ToUniTask(cancellationToken: cancellationToken);
 
-            // 새 씬의 첫 프레임 초기화 이후 암전을 해제합니다.
-            await UniTask.Yield(PlayerLoopTiming.LastPostLateUpdate,
-                cancellationToken);
+            // 새 씬 로드 후 지정된 프레임만큼 기다린 뒤 암전을 해제합니다.
+            await UniTask.DelayFrame(
+                5,
+                PlayerLoopTiming.LastPostLateUpdate,
+                cancellationToken
+            );
 
             await FadeInAsync(cancellationToken);
         }
@@ -143,8 +167,12 @@ public class SceneTransitionManager : MonoBehaviour
 
             await operation.ToUniTask(cancellationToken: cancellationToken);
 
-            await UniTask.Yield(PlayerLoopTiming.LastPostLateUpdate,
-                cancellationToken);
+            // 새 씬 로드 후 지정된 프레임만큼 기다린 뒤 암전을 해제합니다.
+            await UniTask.DelayFrame(
+                5,
+                PlayerLoopTiming.LastPostLateUpdate,
+                cancellationToken
+            );
 
             await FadeInAsync(cancellationToken);
         }
