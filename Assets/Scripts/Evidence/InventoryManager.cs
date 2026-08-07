@@ -33,11 +33,14 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private RawImage zoomRawImg;
     [SerializeField] private GameObject[] zoomPanelButtons;
     [SerializeField] private float dissolveDuration = 0.4f;
+    [SerializeField] private GameObject imageDescPanel;
+    [SerializeField] private GameObject imageDescPrefab;
     
     [Header("ItemUI")]
     [SerializeField] private Transform collectiveUIParent;
     [SerializeField] private GameObject collectiveUIPrefab;
     public TMP_Text nameText;
+    public TMP_Text itemDescText;
     
     [Header("SoundUI")]
     [SerializeField] private Transform soundUIParent;
@@ -130,8 +133,31 @@ public class InventoryManager : MonoBehaviour
         currentPhotoIdx = idx;
         zoomRawImg.texture = photos[idx].tex;
         zoomRawImg.SetNativeSize();
+        Rect rect = zoomRawImg.rectTransform.rect;
+
+        zoomRawImg.material.SetVector(
+            "_RectSize",
+            new Vector4(rect.width, rect.height, 0f, 0f)
+        );
         foreach (var i in zoomPanelButtons)
             i.SetActive(true);
+        for (int i = 0; i != imageDescPanel.transform.childCount; ++i)
+        {
+            Destroy(imageDescPanel.transform.GetChild(i).gameObject);
+        }
+        if (photos[idx].descs.Count > 0)
+        {
+            imageDescPanel.SetActive(true);
+            foreach (var i in photos[idx].descs)
+            {
+                var o = Instantiate(imageDescPrefab, imageDescPanel.transform);
+                o.GetComponent<TMP_Text>().text = i;
+            }
+        }
+        else
+        {
+            imageDescPanel.SetActive(false);
+        }
         zoomPanel.SetActive(true);
         zoomRawImg.transform.DOScale(0.85f, 0f);
         zoomRawImg.transform.DOScale(1f, 0.3f).SetEase(Ease.OutBack);
@@ -173,10 +199,10 @@ public class InventoryManager : MonoBehaviour
             1.05f,
             dissolveDuration
         ).ToUniTask();
+        zoomPanel.SetActive(false);
         await zoomBackground.DOFade(0f, 0.3f).ToUniTask();
         
         int idx = currentPhotoIdx;
-        zoomPanel.SetActive(false);
         if (photos[idx].tex != null)
         {
             Destroy(photos[idx].tex);

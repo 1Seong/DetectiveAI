@@ -53,6 +53,11 @@ public class SceneTransitionManager : MonoBehaviour
         if (fadeInOnStart)
             FadeInAsync(destroyCancellationToken).Forget();
     }
+
+    public void FadeInOut()
+    {
+        FadeOutInAsync().Forget();
+    }
     
     public async UniTask FadeOutInAsync(
         CancellationToken cancellationToken = default)

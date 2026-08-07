@@ -23,12 +23,14 @@ public class CollectiveUICell : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         itemImg.transform.DOScale(targetScale, 0.2f);
         InventoryManager.instance.nameText.text = data.data.evidenceId;
+        InventoryManager.instance.itemDescText.text = data.desc;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         itemImg.transform.DOScale(1f, 0.2f);
         InventoryManager.instance.nameText.text = "";
+        InventoryManager.instance.itemDescText.text = "";
     }
     
     T GetComponentOnlyInChildren<T>() where T : Component

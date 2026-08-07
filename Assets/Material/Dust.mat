@@ -27,6 +27,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BorderTex:
+        m_Texture: {fileID: 2800000, guid: 7b1feda57ef269d448ae3e3202df48f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -45,6 +49,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BorderCrackDepth: 0
+    - _BorderCrackStrength: 1
+    - _BorderFade: 30
+    - _BorderIrregularity: 30
+    - _BorderPatternScale: 1.1
+    - _BorderStrength: 1
     - _ColorMask: 15
     - _DustDensity: 0.779
     - _DustSize: 2.1
@@ -64,7 +74,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _FadeColor: {r: 0.88140154, g: 0.88140154, b: 0.88140154, a: 1}
-    - _RectSize: {r: 525, g: 514, b: 0, a: 0}
+    - _RectSize: {r: 800, g: 600, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

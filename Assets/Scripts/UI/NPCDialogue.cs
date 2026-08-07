@@ -9,6 +9,7 @@ public class NPCDialogue : MonoBehaviour
     public void OnClick()
     {
         EventSystem.current?.SetSelectedGameObject(null);
+        BookManager.Instance.Unlock(data.NPCName);
         NPCManager.instance.PlayDialogue(data.Dialogues, data.sprite, data.NPCName).Forget();
     }
 }

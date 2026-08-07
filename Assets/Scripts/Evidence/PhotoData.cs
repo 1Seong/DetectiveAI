@@ -6,19 +6,23 @@ using UnityEngine;
 public class PhotoData
 {
     public Texture2D tex;
+    public List<string> descs;
     public List<EvidenceData> datas;
 }
 
 public static class PhotoDataHelper
 {
-    public static PhotoData CreatePhotoData(Texture2D croppedTexture, List<EvidenceData> evidences)
+    public static PhotoData CreatePhotoData(Texture2D croppedTexture, List<EvidenceData> evidences, List<string> descriptions)
     {
         return new PhotoData
         {
             tex = CopyTexture(croppedTexture),
-            datas = CopyEvidenceDatas(evidences)
+            datas = CopyEvidenceDatas(evidences),
+            descs =  CopyDescriptions(descriptions)
         };
     }
+    
+    
     
     private static Texture2D CopyTexture(Texture2D source)
     {
@@ -51,6 +55,23 @@ public static class PhotoDataHelper
 
         List<EvidenceData> result =
             new List<EvidenceData>(source.Count);
+
+        foreach (var evidence in source)
+        {
+            result.Add(evidence);
+        }
+
+        return result;
+    }
+    
+    private static List<string> CopyDescriptions(
+        List<string> source)
+    {
+        if (source == null)
+            return new List<string>();
+
+        List<string> result =
+            new List<string>(source.Count);
 
         foreach (var evidence in source)
         {

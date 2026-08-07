@@ -46,6 +46,7 @@ public class ScreenShotSelectionController :
     private Texture2D capturedTexture;
     private Texture2D croppedTexture;
     private List<EvidenceData> evidences = new();
+    private List<string> descs = new();
 
     private Vector2 dragStart;
     private Vector2 dragEnd;
@@ -189,6 +190,7 @@ public class ScreenShotSelectionController :
         SetDimVisible(false);
         dimOverlay.gameObject.SetActive(true);
         croppedImage.gameObject.SetActive(true);
+        croppedImage.DOFade(1f, 0f);
 
         croppedImage.texture = croppedTexture;
 
@@ -227,6 +229,7 @@ public class ScreenShotSelectionController :
                 o.position.y <= rect.max.y)
             {
                 evidences.Add(o.GetComponent<EvidenceObject>().data);
+                descs.Add(o.GetComponent<EvidenceObject>().desc);
             }
         }
     }
@@ -235,13 +238,14 @@ public class ScreenShotSelectionController :
     {
         resultGroup.SetActive(false);
         exitButton.SetActive(false);
-        InventoryManager.instance.AddPhoto(PhotoDataHelper.CreatePhotoData(croppedTexture, evidences));
+        InventoryManager.instance.AddPhoto(PhotoDataHelper.CreatePhotoData(croppedTexture, evidences, descs));
         
         dimOverlay.gameObject.SetActive(false);
         var seq = DOTween.Sequence();
         seq.AppendCallback(InventoryManager.instance.ScaleUpBagButton);
         seq.Append(croppedImage.transform.DOMove(InventoryManager.instance.GetBagButtonPos(), moveToBagDur).SetEase(Ease.InCubic));
         seq.Join(croppedImage.transform.DOScale(0f, moveToBagDur).SetEase(Ease.InCubic).OnComplete(ExitScreenshotMode));
+        seq.Join(croppedImage.DOFade(0f, moveToBagDur).SetEase(Ease.InCubic));
         seq.AppendCallback(InventoryManager.instance.ScaleDownBagButton);
     }
 
@@ -532,6 +536,7 @@ public class ScreenShotSelectionController :
         Destroy(croppedTexture);
         croppedTexture = null;
         evidences.Clear();
+        descs.Clear();
     }
 
     private void OnDestroy()

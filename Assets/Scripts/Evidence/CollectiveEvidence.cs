@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class CollectiveEvidence : MonoBehaviour
 {
     public Sprite sprite;
+    public string desc;
     public EvidenceData data;
 
     [SerializeField] private float moveUpDis = 1f;
@@ -21,6 +22,7 @@ public class CollectiveEvidence : MonoBehaviour
         seq.AppendCallback(InventoryManager.instance.ScaleUpBagButton);
         seq.Append(transform.DOMove(InventoryManager.instance.GetBagButtonPos(), moveToBagDur).SetEase(Ease.InCubic));
         seq.Join(transform.DOScale(transform.localScale.x * 0.2f, moveToBagDur).SetEase(Ease.InCubic).OnComplete(()=>gameObject.SetActive(false)));
+        seq.Join(GetComponent<Image>().DOFade(0f, moveToBagDur).SetEase(Ease.InCubic));
         seq.AppendCallback(InventoryManager.instance.ScaleDownBagButton);
     }
 }

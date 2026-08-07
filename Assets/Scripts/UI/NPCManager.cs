@@ -89,13 +89,6 @@ public class NPCManager : MonoBehaviour
         foreach (var s in dialogue)
         {
             await textAnim.PlayDialogueAsync(s);
-            
-            // 현재 문장을 넘긴 스페이스 입력이
-            // 다음 문장까지 전달되지 않도록 기다린다.
-            await UniTask.WaitUntil(
-                () => !Input.GetKey(KeyCode.Space)
-            );
-
             await UniTask.Yield();
         }
         dialoguePanel.SetActive(false);

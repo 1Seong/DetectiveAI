@@ -29,6 +29,37 @@ Shader "UI/DiagonalDustDissolve"
 
         [Toggle(UNITY_UI_ALPHACLIP)]
         _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
+        _BorderTex ("Border Pattern", 2D) = "white" {}
+
+        _BorderStrength (
+            "Border Effect Strength",
+            Range(0, 1)
+        ) = 1
+
+        _BorderFade (
+            "Border Fade",
+            Range(0.1, 30)
+        ) = 6
+
+        _BorderIrregularity (
+            "Border Irregularity",
+            Range(0, 30)
+        ) = 7
+
+        _BorderPatternScale (
+            "Border Pattern Scale",
+            Float
+        ) = 8
+
+        _BorderCrackStrength (
+            "Border Crack Strength",
+            Range(0, 1)
+        ) = 0.45
+
+        _BorderCrackDepth (
+            "Border Crack Depth",
+            Range(0, 50)
+        ) = 18
     }
 
     SubShader
@@ -85,6 +116,7 @@ Shader "UI/DiagonalDustDissolve"
                 float4 color : COLOR;
                 float2 uv : TEXCOORD0;
                 float4 worldPosition : TEXCOORD1;
+                float2 rawUV : TEXCOORD2;
             };
 
             sampler2D _MainTex;
@@ -103,6 +135,15 @@ Shader "UI/DiagonalDustDissolve"
             float _ScatterNoiseScale;
             float _DustDensity;
             float _DustSize;
+            
+            sampler2D _BorderTex;
+
+            float _BorderStrength;
+            float _BorderFade;
+            float _BorderIrregularity;
+            float _BorderPatternScale;
+            float _BorderCrackStrength;
+            float _BorderCrackDepth;
 
             Varyings Vert(Attributes input)
             {
@@ -110,7 +151,10 @@ Shader "UI/DiagonalDustDissolve"
 
                 output.worldPosition = input.vertex;
                 output.vertex = UnityObjectToClipPos(input.vertex);
+
+                output.rawUV = input.uv;
                 output.uv = TRANSFORM_TEX(input.uv, _MainTex);
+
                 output.color = input.color * _Color;
 
                 return output;
@@ -132,6 +176,70 @@ Shader "UI/DiagonalDustDissolve"
                 // 짧은 축을 1로 맞춘 비율 보정 좌표
                 float minSide = min(rectSize.x, rectSize.y);
                 float2 aspectScale = rectSize / minSide;
+                
+                // 화면에 표시되는 사진의 실제 비율을 반영한 테두리 좌표
+                float2 borderUV = saturate(input.rawUV);
+
+                float2 borderEffectUV =
+                    borderUV * aspectScale;
+
+                // 각 픽셀이 사진의 네 변에서 얼마나 떨어져 있는지 계산합니다.
+                // UV가 아니라 RectSize를 사용하므로 가로세로 비율이 달라도
+                // 테두리 두께가 한쪽으로 늘어나지 않습니다.
+                float2 distanceToEdge =
+                    min(borderUV, 1.0 - borderUV) *
+                    rectSize;
+
+                float edgeDistance0 =
+                    min(distanceToEdge.x, distanceToEdge.y);
+
+                // 검은 균열과 흰 셀로 구성된 Voronoi 텍스처를 가정합니다.
+                float borderPattern =
+                    tex2D(
+                        _BorderTex,
+                        borderEffectUV * _BorderPatternScale
+                    ).r;
+
+                // 검은 부분일수록 테두리를 더 깊게 깎습니다.
+                float erosionDistance =
+                    (1.0 - borderPattern) *
+                    _BorderIrregularity;
+
+                // 사진 바깥쪽으로 갈수록 부드럽게 투명해지는 기본 마스크
+                float softBorderMask =
+                    smoothstep(
+                        erosionDistance,
+                        erosionDistance + max(_BorderFade, 0.001),
+                        edgeDistance0
+                    );
+
+                // 균열이 사진 안쪽으로 적용되는 범위
+                float crackArea =
+                    1.0 - smoothstep(
+                        _BorderCrackDepth,
+                        _BorderCrackDepth + max(_BorderFade, 0.001),
+                        edgeDistance0
+                    );
+
+                // Voronoi의 검은 선을 실제 투명 균열로 변환
+                float crackMask =
+                    lerp(
+                        1.0,
+                        borderPattern,
+                        crackArea * _BorderCrackStrength
+                    );
+
+                float organicBorderMask =
+                    softBorderMask * crackMask;
+
+                // 0이면 테두리 효과를 완전히 비활성화
+                float borderMask =
+                    lerp(
+                        1.0,
+                        organicBorderMask,
+                        _BorderStrength
+                    );
+                
 
                 float2 effectUV = uv * aspectScale;
 
@@ -266,7 +374,8 @@ Shader "UI/DiagonalDustDissolve"
                     );
 
                 float finalAlpha =
-                    saturate(bodyAlpha + dustAlpha);
+                    saturate(bodyAlpha + dustAlpha) *
+                borderMask;
 
                 #ifdef UNITY_UI_CLIP_RECT
                 finalAlpha *= UnityGet2DClipping(
