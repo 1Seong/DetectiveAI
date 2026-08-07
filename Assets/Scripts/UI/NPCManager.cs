@@ -365,7 +365,7 @@ public class NPCManager : MonoBehaviour
         float sum = 0;
         foreach (var i in evaluationWeights)
             sum += i;
-        resultText.text = score.ToString() + " 점 / " + sum.ToString() + " 점";
+        resultText.text = (score*100f).ToString() + " 점 / " + (sum*100f).ToString() + " 점";
         resultSticker.sprite = sticker;
         resultSticker.SetNativeSize();
     }
