@@ -40,14 +40,14 @@ public class BookManager : MonoBehaviour
         bookPanel.gameObject.SetActive(true);
         background.DOFade(0f, 0f);
         background.DOFade(250.0f / 255f, 0.3f);
-        bookPanel.DOLocalMoveY(-1000f, 0f);
+        bookPanel.DOLocalMoveY(-1200f, 0f);
         bookPanel.DOLocalMoveY(0f, 0.7f).SetEase(Ease.OutQuart);
     }
 
     public void CloseBook()
     {
         background.DOFade(0f, 0.5f);
-        bookPanel.DOLocalMoveY(-1000f, 0.5f).SetEase(Ease.InQuart).OnComplete(() =>
+        bookPanel.DOLocalMoveY(-1200f, 0.5f).SetEase(Ease.InQuart).OnComplete(() =>
         {
             background.gameObject.SetActive(false);
             bookPanel.gameObject.SetActive(false);
