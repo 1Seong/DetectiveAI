@@ -63,6 +63,9 @@ public class InventoryManager : MonoBehaviour
     {
         if (instance == null)
             instance = this;
+
+        GameManager.Instance.CanUseInventory = true;
+        GameManager.Instance.CanUseOption = true;
     }
 
     [SerializeField] private List<PhotoData> photos =  new List<PhotoData>();
@@ -357,6 +360,13 @@ public class InventoryManager : MonoBehaviour
     public void SetMoveButtons(GameObject o)
     {
         moveButtons = o;
+    }
+
+    public void SetSoundNonArea(GameObject o, Image parrotImage, TMP_Text parrotText)
+    {
+        soundNoneArea = o;
+        parrotImg = parrotImage;
+        this.parrotText = parrotText;
     }
 
     public void ToggleMove()
