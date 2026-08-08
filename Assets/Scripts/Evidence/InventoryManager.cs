@@ -58,6 +58,13 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Sprite normalParrot;
     [SerializeField] private Sprite sadParrot;
     private List<Button> soundObjects = new();
+    private Transform[] photoEvidences;
+    public Transform[] GetPhotoEvidences() =>  photoEvidences;
+
+    public void SetPhotoEvidences(Transform[] audioEvidences)
+    {
+        this.photoEvidences = audioEvidences;
+    }
     
     void Awake()
     {

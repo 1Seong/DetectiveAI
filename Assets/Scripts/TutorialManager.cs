@@ -59,6 +59,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (isMoveTutorialCleared) return;
         isMoveTutorialCleared = true;
+        moveTutorialBackground2.gameObject.SetActive(false);
         foreach(var o in moveTutorial2HideObjects)
             o.SetActive(true);
     }

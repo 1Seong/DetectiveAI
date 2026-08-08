@@ -22,7 +22,6 @@ public class ScreenShotSelectionController :
     [SerializeField] private GameObject inputArea;
     [SerializeField] private GameObject resultGroup;
     [SerializeField] private GameObject exitButton;
-    [SerializeField] private GameObject photoSpotParent;
     
     [SerializeField] private RectTransform dimTop;
     [SerializeField] private RectTransform dimBottom;
@@ -56,8 +55,6 @@ public class ScreenShotSelectionController :
 
     private CancellationTokenSource animationCts;
 
-    private Transform[] evidenceObjects;
-
     private void Awake()
     {
         canvasRect = screenshotCanvas.transform as RectTransform;
@@ -66,8 +63,6 @@ public class ScreenShotSelectionController :
         selectionArea.gameObject.SetActive(false);
         dimOverlay.gameObject.SetActive(false);
         croppedImage.gameObject.SetActive(false);
-
-        evidenceObjects = photoSpotParent.GetComponentsInChildren<Transform>();
     }
 
     public void EnterScreenshotMode()
@@ -231,7 +226,8 @@ public class ScreenShotSelectionController :
 
     private void CaptureObjects(Rect rect)
     {
-        for(int i = 1; i != evidenceObjects.Length; ++i)
+        var evidenceObjects = InventoryManager.instance.GetPhotoEvidences();
+        for(int i = 0; i != evidenceObjects.Length; ++i)
         {
             var o = evidenceObjects[i];
             if (o.position.x >= rect.min.x && o.position.x <= rect.max.x && o.position.y >= rect.min.y &&
