@@ -161,7 +161,15 @@ public class NPCManager : MonoBehaviour
 
         var bs = submitParent.GetComponentsInChildren<Button>();
         foreach (var b in bs)
+        {
             b.interactable = true;
+            if (b.transform.childCount > 0)
+            {
+                Transform lastChild = b.transform.GetChild(b.transform.childCount - 1);
+                var component = lastChild.GetComponent<Image>();
+                component.gameObject.SetActive(true);
+            }
+        }
     }
 
     public void ExitStep1()
@@ -234,7 +242,15 @@ public class NPCManager : MonoBehaviour
         inputField.gameObject.SetActive(true);
         var bs = submitParent.GetComponentsInChildren<Button>();
         foreach (var b in bs)
+        {
             b.interactable = false;
+            if (b.transform.childCount > 0)
+            {
+                Transform lastChild = b.transform.GetChild(b.transform.childCount - 1);
+                var component = lastChild.GetComponent<Image>();
+                component.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void SubmitRecord()
