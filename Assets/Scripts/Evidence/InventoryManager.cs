@@ -39,6 +39,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private float dissolveDuration = 0.4f;
     [SerializeField] private GameObject imageDescPanel;
     [SerializeField] private GameObject imageDescPrefab;
+    [SerializeField] private Transform zoomInRoot;
     
     [Header("ItemUI")]
     [SerializeField] private Transform collectiveUIParent;
@@ -171,6 +172,7 @@ public class InventoryManager : MonoBehaviour
             imageDescPanel.SetActive(true);
             foreach (var i in photos[idx].descs)
             {
+                zoomInRoot.DOLocalMoveX(-437, 0f);
                 var o = Instantiate(imageDescPrefab, imageDescPanel.transform);
                 var rt = o.GetComponent<RectTransform>();
                 rt.anchoredPosition = Vector2.zero;
@@ -186,6 +188,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            zoomInRoot.DOLocalMoveX(-117, 0f);
             imageDescPanel.SetActive(false);
         }
         zoomPanel.SetActive(true);
