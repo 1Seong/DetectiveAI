@@ -72,6 +72,12 @@ public class ScreenShotSelectionController :
 
     public void EnterScreenshotMode()
     {
+        if (!TutorialManager.instance.isCamelTutorialCleared)
+        {
+            TutorialManager.instance.CamelTutorial();
+            return;
+        }
+        
         if (InventoryManager.instance.IsPhotoMax())
         {
             // TODO : 경고 알림

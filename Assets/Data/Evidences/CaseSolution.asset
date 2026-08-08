@@ -29,19 +29,19 @@ MonoBehaviour:
   misleadingClaims:
   - claimId: 0
     claim: "\uC1FC\uCF5C\uB77C\uAC00 \uC9C1\uC811 \uB178\uD2B8\uB97C \uD6D4\uCCE4\uB2E4"
-    penalty: -0.3
+    penalty: 0.3
   - claimId: 1
     claim: "\uBA38\uD540\uC774 \uB808\uC2DC\uD53C\uB97C \uD6D4\uCCD0 \uB77C\uC774\uBC8C\uC5D0
       \uD314\uC558\uB2E4"
-    penalty: -0.3
+    penalty: 0.3
   - claimId: 2
     claim: "\uB808\uC2DC\uD53C \uB178\uD2B8\uAC00 \uBB3C\uB9AC\uC801\uC73C\uB85C
       \uB3C4\uB09C\uB2F9\uD588\uB2E4"
-    penalty: -0.1
+    penalty: 0.1
   - claimId: 3
     claim: "\uBE0C\uB9AC\uC624\uC288\uB294 \uB2E8\uC21C \uC0AC\uC5C5 \uAD6C\uC0C1\uB9CC
       \uD588\uC744 \uBFD0 \uBB34\uAD00\uD558\uB2E4"
-    penalty: -0.3
+    penalty: 0.3
   - claimId: 4
     claim: "\uBC94\uD589\uC740 \uB2A6\uC740 \uBC24, \uD3D0\uC810 \uD6C4\uC5D0 \uC77C\uC5B4\uB0AC\uB2E4"
-    penalty: -0.1
+    penalty: 0.1

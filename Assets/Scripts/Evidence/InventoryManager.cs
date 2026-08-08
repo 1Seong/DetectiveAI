@@ -261,6 +261,12 @@ public class InventoryManager : MonoBehaviour
 
     public void EnterSoundMode()
     {
+        if (!TutorialManager.instance.isParrotTutorialCleared)
+        {
+            TutorialManager.instance.ParrotTutorial();
+            return;
+        }
+
         GameManager.Instance.CanUseInventory = false;
         GameManager.Instance.CanUseOption = false;
         parrotText.text = "기억할 소리를 선택하세요";

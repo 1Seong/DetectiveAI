@@ -76,6 +76,11 @@ public class NPCManager : MonoBehaviour
         instance = null;
     }
 
+    public UniTask PlayDialogueDetective(List<string> dialogue)
+    {
+        return PlayDialogue(dialogue, monkeySprite, "미스터 A");
+    }
+
     public async UniTask PlayDialogue(List<string> dialogue, Sprite sprite, String name, bool isNpcDialogue = false)
     {
         GameManager.Instance.CanUseInventory = false;
