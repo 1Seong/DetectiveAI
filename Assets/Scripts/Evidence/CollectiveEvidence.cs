@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class CollectiveEvidence : MonoBehaviour
 {
     public Sprite sprite;
+    [TextArea]
     public string desc;
     public EvidenceData data;
 

@@ -145,4 +145,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29523a0cee57f2846be0c137f627be55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: dce23ec341c20c540a480419371014a4, type: 2}

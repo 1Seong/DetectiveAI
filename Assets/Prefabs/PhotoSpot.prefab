@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 5
   m_Name: PhotoSpot
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -48,4 +48,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a106c176e37a14998573979106afec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EvidenceObject
-  data: {fileID: 11400000, guid: 02a6e5114ba28cf4089bf4485081a21a, type: 2}
+  data: {fileID: 11400000, guid: 8a06f11de47e9dc4cb30e1c0cfb99c64, type: 2}
+  desc: "\uBC14\uB2E5\uC5D0 \uB3C8\uC774 \uBFCC\uB824\uC838 \uC788\uB2E4"

@@ -323,7 +323,8 @@ public class NPCManager : MonoBehaviour
                                    deductionOutput.originalStatus + "\n" +
                                    deductionOutput.copyDestination + "\n" +
                                    deductionOutput.tasteGapReason + "\n";
-        // TODO : 출력 형식 수정
+        
+        
         deductionResultBackground.gameObject.SetActive(true);
         deductionResultBackground.DOFade(0f, 0f);
         deductionResultBackground.DOFade(250.0f / 255f, 0.3f);
@@ -399,6 +400,13 @@ public class NPCManager : MonoBehaviour
         sum += result.originalStatusScore * evaluationWeights[6];
         sum += result.copyDestinationScore * evaluationWeights[7];
         sum += result.tasteGapReasonScore * evaluationWeights[8];
+
+        float misleadingPenalty = solution.misleadingClaims
+            .Where(claim =>
+                result.detectedMisleadingClaims.Contains(claim.claimId))
+            .Sum(claim => claim.penalty);
+
+        float finalScore = Mathf.Clamp01(sum - misleadingPenalty);
         return sum;
     }
     

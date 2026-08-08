@@ -6,5 +6,6 @@ using UnityEngine;
 public class EvidenceData : ScriptableObject
 {
     public string evidenceId;
+    [TextArea]
     public string fact;
 }

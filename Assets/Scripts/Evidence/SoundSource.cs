@@ -8,6 +8,8 @@ public class SoundSource : MonoBehaviour
     public Sprite sprite;
     public AudioClip clip;
     public EvidenceData data;
+    [TextArea]
+    public string desc;
 
     private bool isCollected = false;
     private Button button;

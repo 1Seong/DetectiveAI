@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private GameObject optionCanvas;
+    [SerializeField] private GameObject optionPanel;
     [SerializeField] private Image optionBackground;
+    [SerializeField] private GameObject creditPanel;
 
     public bool CanUseOption;
     public bool CanUseInventory;
@@ -51,7 +53,8 @@ public class GameManager : MonoBehaviour
     {
         isOpened = true;
         CanUseInventory = false;
-        optionCanvas.SetActive(true);
+        optionPanel.SetActive(true);
+        optionBackground.gameObject.SetActive(true);
         optionBackground.DOFade(0f, 0f);
         optionBackground.DOFade(250.0f/255f, 0.3f);
     }
@@ -60,6 +63,23 @@ public class GameManager : MonoBehaviour
     {
         isOpened = false;
         CanUseInventory = true;
-        optionCanvas.SetActive(false);
+        optionPanel.SetActive(false);
+        optionBackground.gameObject.SetActive(false);
+    }
+
+    public void ReturnToTitle()
+    {
+        CloseOption();
+        SceneTransitionManager.Instance.ChangeSceneAsync("MainMenu").Forget();
+    }
+
+    public void OpenCredit()
+    {
+        creditPanel.SetActive(true);
+    }
+
+    public void CloseCredit()
+    {
+        creditPanel.SetActive(false);
     }
 }

@@ -24,6 +24,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Transform deductionItemParent;
     [SerializeField] private Transform deductionPhotoParent;
     [SerializeField] private Transform deductionAudioParent;
+    [SerializeField] private Sprite normalBag;
+    [SerializeField] private Sprite openedBag;
+    [SerializeField] private Image bagImage;
+    [SerializeField] private GameObject footButton;
     
     [Header("PhotoUI")]
     [SerializeField] private Transform photoUIParent;
@@ -93,6 +97,9 @@ public class InventoryManager : MonoBehaviour
         // 이미 다른 아이템 때문에 확대된 상태
         if (bagScaleActiveCount > 1)
             return;
+
+        bagImage.sprite = openedBag;
+        bagImage.SetNativeSize();
         bagButton.gameObject.SetActive(true);
         bagButton.DOKill();
         
@@ -109,7 +116,11 @@ public class InventoryManager : MonoBehaviour
 
         bagButton.DOKill();
         
-        bagButton.DOScale(1f, 0.3f);
+        bagButton.DOScale(1f, 0.3f).OnComplete(() =>
+        {
+            bagImage.sprite = normalBag;
+            bagImage.SetNativeSize();
+        });
     }
     
     #region Photo
@@ -151,6 +162,15 @@ public class InventoryManager : MonoBehaviour
             foreach (var i in photos[idx].descs)
             {
                 var o = Instantiate(imageDescPrefab, imageDescPanel.transform);
+                var rt = o.GetComponent<RectTransform>();
+                rt.anchoredPosition = Vector2.zero;
+                // 상하좌우 모두 Stretch
+                rt.anchorMin = Vector2.zero;
+                rt.anchorMax = Vector2.one;
+
+                // 좌우 여백 20, 상하 여백 0
+                rt.offsetMin = new Vector2(20f, 0f);   // Left, Bottom
+                rt.offsetMax = new Vector2(-20f, 0f); // -Right, -Top
                 o.GetComponent<TMP_Text>().text = i;
             }
         }
@@ -243,6 +263,7 @@ public class InventoryManager : MonoBehaviour
         GameManager.Instance.CanUseOption = false;
         parrotText.text = "기억할 소리를 선택하세요";
         parrotImg.sprite = normalParrot;
+        parrotImg.SetNativeSize();
         soundNoneArea.SetActive(true);
         exitSoundButton.SetActive(true);
         foreach(var o in hideObjects)
@@ -274,6 +295,7 @@ public class InventoryManager : MonoBehaviour
         o1.GetComponent<SubmitAudioUICell>().Init(sound);
         parrotText.text = "기억할 소리를 선택하세요";
         parrotImg.sprite = normalParrot;
+        parrotImg.SetNativeSize();
     }
 
     public void OpenSound(SoundSource sound)
@@ -285,6 +307,7 @@ public class InventoryManager : MonoBehaviour
     {
         parrotText.text = "거기엔 아무 소리도 들리지 않아요...";
         parrotImg.sprite = sadParrot;
+        parrotImg.SetNativeSize();
     }
     #endregion
 
@@ -303,6 +326,9 @@ public class InventoryManager : MonoBehaviour
         
         if (isInventoryOpened)
         {
+            footButton.SetActive(true);
+            bagImage.sprite = normalBag;
+            bagImage.SetNativeSize();
             GameManager.Instance.CanUseOption = true;
             isInventoryOpened = false;
             inventoryParent.SetActive(false);
@@ -314,11 +340,54 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            footButton.SetActive(false);
+            bagImage.sprite = openedBag;
+            bagImage.SetNativeSize();
             GameManager.Instance.CanUseOption = false;
             isInventoryOpened = true;
             background.gameObject.SetActive(true);
             inventoryParent.SetActive(true);
             background.DOFade(250.0f / 255f, 0.3f).OnComplete(() => isInventoryOpening = false);
         }
+    }
+
+    private GameObject moveButtons;
+    private bool isMove;
+
+    public void SetMoveButtons(GameObject o)
+    {
+        moveButtons = o;
+    }
+
+    public void ToggleMove()
+    {
+        if (isMove)
+        {
+            ExitMoveMode();
+        }
+        else
+        {
+            EnterMoveMode();
+        }
+    }
+
+    public void EnterMoveMode()
+    {
+        isMove = true;
+        moveButtons.SetActive(true);
+        GameManager.Instance.CanUseInventory = false;
+        GameManager.Instance.CanUseOption = false;
+        foreach(var o in hideObjects)
+            o.SetActive(false);
+    }
+
+    public void ExitMoveMode()
+    {
+        isMove = false;
+        moveButtons.SetActive(false);
+        GameManager.Instance.CanUseInventory = true;
+        GameManager.Instance.CanUseOption = true;
+        foreach(var o in hideObjects)
+            o.SetActive(true);
     }
 }

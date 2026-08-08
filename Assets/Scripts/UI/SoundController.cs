@@ -22,6 +22,7 @@ public class SoundController : MonoBehaviour
      {
           textGroup.SetActive(true);
           parrotImage.sprite = hearingParrot;
+          parrotImage.SetNativeSize();
           OpenPanel(sound).Forget();
      }
 
@@ -29,6 +30,7 @@ public class SoundController : MonoBehaviour
      {
           textGroup.SetActive(false);
           parrotImage.sprite = normalParrot;
+          parrotImage.SetNativeSize();
           OpenPanel(sound).Forget();
      }
 
@@ -48,6 +50,6 @@ public class SoundController : MonoBehaviour
           rootObject.SetActive(false);
           tween.Kill();
           soundImage.transform.position = originalPos;
-          soundText.text = "";
+          soundText.text = sound.desc;
      }
 }
