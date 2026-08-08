@@ -25,13 +25,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3790971545511677174}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.04551992, w: 0.9989635}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.218}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -65,7 +65,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"'
+  m_text: "\uC6B0\uC5F0\uD788 \uB9C8\uC8FC\uCE5C \uBBF8\uC2DD\uAC00 \uC190\uB2D8\uC758
+    \uD14C\uC774\uBE14.\n\uB450 \uBE75\uC9D1\uC758 \uBC14\uAC8C\uD2B8\uB97C \uC804\uBD80
+    \uC8FC\uBB38\uD55C \uB4EF. \n\uC660\uC9C0 \uD55C\uCABD \uBE75\uC774 \uB354 \uB9DB\uC788\uC5B4
+    \uBCF4\uC778\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f2663942818d95d45a140b45bba12c5b, type: 2}
   m_sharedMaterial: {fileID: -8861081411208741027, guid: f2663942818d95d45a140b45bba12c5b, type: 2}
@@ -92,8 +95,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37
-  m_fontSizeBase: 37
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

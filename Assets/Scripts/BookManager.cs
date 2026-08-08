@@ -46,10 +46,14 @@ public class BookManager : MonoBehaviour
 
     public void CloseBook()
     {
-        background.gameObject.SetActive(false);
-        bookPanel.gameObject.SetActive(false);
-        GameManager.Instance.CanUseInventory = true;
-        GameManager.Instance.CanUseOption = true;
+        background.DOFade(0f, 0.5f);
+        bookPanel.DOLocalMoveY(-1000f, 0.5f).SetEase(Ease.InQuart).OnComplete(() =>
+        {
+            background.gameObject.SetActive(false);
+            bookPanel.gameObject.SetActive(false);
+            GameManager.Instance.CanUseInventory = true;
+            GameManager.Instance.CanUseOption = true;
+        });
     }
 
     public void Unlock(string name)

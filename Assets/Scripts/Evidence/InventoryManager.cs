@@ -223,8 +223,6 @@ public class InventoryManager : MonoBehaviour
             dissolveDuration
         ).ToUniTask();
         zoomPanel.SetActive(false);
-        await zoomBackground.DOFade(0f, 0.3f).ToUniTask();
-        
         int idx = currentPhotoIdx;
         if (photos[idx].tex != null)
         {
@@ -235,6 +233,7 @@ public class InventoryManager : MonoBehaviour
         Destroy(photoUIParent.transform.GetChild(idx).gameObject);
         Destroy(deductionPhotoParent.transform.GetChild(idx).gameObject);
         
+        await zoomBackground.DOFade(0f, 0.3f).ToUniTask();
         dissolveMaterial.SetFloat(DissolveAmountId, 0f);
     }
     #endregion

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6593987844276575088}
   - component: {fileID: 3110554231655471601}
   - component: {fileID: 3408365528820198945}
+  - component: {fileID: 8893607055884948417}
   m_Layer: 5
   m_Name: MoveButton
   m_TagString: Untagged
@@ -147,3 +148,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveButton
   fromScene: {fileID: 0}
   toScene: {fileID: 0}
+--- !u!114 &8893607055884948417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659318422544132674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14fe665a2b5f34479abc70da58f6ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FloatingArrowUI
+  target: {fileID: 5915278352969730760}
+  moveDistance: 15
+  moveDuration: 1
+  useUnscaledTime: 1
