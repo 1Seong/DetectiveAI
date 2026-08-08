@@ -315,15 +315,21 @@ public class NPCManager : MonoBehaviour
         await PlayDialogue(s, monkeySprite, "탐정");
 
         deductionResultText.text = "범인 : " + deductionOutput.culprit + "\n" + "\n" +
-                                   "동기 : " + deductionOutput.motive + "\n" + "\n" +
-                                   "수법 : " + deductionOutput.scene + "\n" +
-                                   deductionOutput.time + "\n" +
-                                   deductionOutput.accessMethod + "\n" +
-                                   deductionOutput.coreAction + "\n" +
-                                   deductionOutput.originalStatus + "\n" +
-                                   deductionOutput.copyDestination + "\n" +
-                                   deductionOutput.tasteGapReason + "\n";
-        
+                                   "동기 : " + deductionOutput.motive + "\n" + "\n";
+        string methodString = "수법 : " + deductionOutput.scene;
+        if (deductionOutput.time != "불명확" && deductionOutput.time != "해당 없음")
+            methodString += deductionOutput.time + "\n";
+        if (deductionOutput.accessMethod != "불명확" && deductionOutput.accessMethod != "해당 없음")
+            methodString += deductionOutput.accessMethod + "\n";
+        if (deductionOutput.coreAction != "불명확" && deductionOutput.coreAction != "해당 없음")
+            methodString += deductionOutput.coreAction + "\n";
+        if (deductionOutput.originalStatus != "불명확" && deductionOutput.originalStatus != "해당 없음")
+            methodString += deductionOutput.originalStatus + "\n";
+        if (deductionOutput.copyDestination != "불명확" && deductionOutput.copyDestination != "해당 없음")
+            methodString += deductionOutput.copyDestination + "\n";
+        if (deductionOutput.tasteGapReason != "불명확" && deductionOutput.tasteGapReason != "해당 없음")
+            methodString += deductionOutput.tasteGapReason;
+        deductionResultText.text += methodString;
         
         deductionResultBackground.gameObject.SetActive(true);
         deductionResultBackground.DOFade(0f, 0f);

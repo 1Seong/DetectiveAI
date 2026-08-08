@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResultData
   NormalScore: 0.8
   GoodScore: 0.4
-  BadSticker: {fileID: 21300000, guid: 0f6ebfa69c9f8f04d9f4a95140da7c9d, type: 3}
-  NormalSticker: {fileID: 21300000, guid: 0f6ebfa69c9f8f04d9f4a95140da7c9d, type: 3}
-  GoodSticker: {fileID: 21300000, guid: 0f6ebfa69c9f8f04d9f4a95140da7c9d, type: 3}
+  BadSticker: {fileID: 21300000, guid: 7bb5dd4dbf88ea94eabce10d4ac1aaee, type: 3}
+  NormalSticker: {fileID: 21300000, guid: 6e0154a3021263e4281a73c5bea94170, type: 3}
+  GoodSticker: {fileID: 21300000, guid: 9f54a20b49aaaab49bbc6296ecc01c14, type: 3}
   BadResponse:
   - "\uB124..? \uADF8\uB807\uC9C0\uB9CC..."
   NormalResponse:
