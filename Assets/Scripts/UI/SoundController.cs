@@ -31,6 +31,7 @@ public class SoundController : MonoBehaviour
           textGroup.SetActive(false);
           parrotImage.sprite = normalParrot;
           parrotImage.SetNativeSize();
+          AudioManager.Instance.PlaySFX(sound.type); // TODO: 하이피치 sfx 찾아서 재생
           OpenPanel(sound).Forget();
      }
 
@@ -39,17 +40,16 @@ public class SoundController : MonoBehaviour
           background.gameObject.SetActive(true);
           background.DOFade(250.0f / 255f, 0.3f);
           rootObject.SetActive(true);
-          soundText.text = sound.data.fact;
+          soundText.text = sound.desc;
           soundImage.sprite = sound.sprite;
           soundImage.SetNativeSize();
           var originalPos = soundImage.transform.position;
           var tween = soundImage.transform.DOMoveY(soundImage.transform.position.y + moveDis, moveTime).SetLoops(-1, LoopType.Yoyo);
-          // TODO : 오디오 클립 재생 (살짝 높은 피치로)
           await UniTask.WaitForSeconds(waitTime);
           background.DOFade(0f, 0.3f).OnComplete(()=>background.gameObject.SetActive(false));
           rootObject.SetActive(false);
           tween.Kill();
+          AudioManager.Instance.StopAllSFX();
           soundImage.transform.position = originalPos;
-          soundText.text = sound.desc;
      }
 }

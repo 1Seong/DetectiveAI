@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -28,6 +29,15 @@ public class AudioManager : MonoBehaviour
 
     [Range(0f, 1f)]
     [SerializeField] private float sfxVolume = 1f;
+    
+    [Header("BGM Fade")]
+    [Min(0f)]
+    [SerializeField] private float fadeInDuration = 0.5f;
+
+    [Min(0f)]
+    [SerializeField] private float fadeOutDuration = 0.5f;
+    
+    
 
     private bool isMasterMuted;
     private bool isBGMMuted;
@@ -205,7 +215,7 @@ public class AudioManager : MonoBehaviour
 
         sfxSource.PlayOneShot(
             clip,
-            Mathf.Clamp01(volumeScale)
+            volumeScale
         );
     }
 
@@ -221,19 +231,71 @@ public class AudioManager : MonoBehaviour
 
     #region BGM
 
+    private Tween bgmFadeTween;
+
     public void PlayBGM(AudioClip clip)
     {
         if (clip == null || bgmSource == null)
             return;
 
-        // 같은 BGM이 이미 재생 중이면 처음부터 다시 재생하지 않습니다.
-        if (bgmSource.clip == clip && bgmSource.isPlaying)
-            return;
+        bgmFadeTween?.Kill();
+        bgmFadeTween = null;
 
-        bgmSource.Stop();
-        bgmSource.clip = clip;
-        bgmSource.loop = true;
-        bgmSource.Play();
+        // 같은 BGM이면 재시작하지 않고 목표 음량으로 복구합니다.
+        if (bgmSource.clip == clip && bgmSource.isPlaying)
+        {
+            bgmFadeTween = bgmSource
+                .DOFade(1f, fadeInDuration)
+                .SetEase(Ease.OutSine)
+                .SetUpdate(true);
+
+            return;
+        }
+
+        // 기존 BGM이 재생 중이면 페이드 아웃 후 새 BGM을 재생합니다.
+        if (bgmSource.isPlaying)
+        {
+            Sequence sequence = DOTween.Sequence()
+                .SetUpdate(true);
+
+            sequence.Append(
+                bgmSource
+                    .DOFade(0f, fadeOutDuration)
+                    .SetEase(Ease.InSine)
+            );
+
+            sequence.AppendCallback(() =>
+            {
+                bgmSource.Stop();
+                bgmSource.clip = clip;
+                bgmSource.loop = true;
+                bgmSource.volume = 0f;
+                bgmSource.Play();
+            });
+
+            sequence.Append(
+                bgmSource
+                    .DOFade(1f, fadeInDuration)
+                    .SetEase(Ease.OutSine)
+            );
+
+            sequence.OnComplete(() => bgmFadeTween = null);
+            bgmFadeTween = sequence;
+        }
+        else
+        {
+            // 재생 중인 BGM이 없으면 바로 페이드 인합니다.
+            bgmSource.clip = clip;
+            bgmSource.loop = true;
+            bgmSource.volume = 0f;
+            bgmSource.Play();
+
+            bgmFadeTween = bgmSource
+                .DOFade(1f, fadeInDuration)
+                .SetEase(Ease.OutSine)
+                .SetUpdate(true)
+                .OnComplete(() => bgmFadeTween = null);
+        }
     }
 
     public void StopBGM()
@@ -241,10 +303,31 @@ public class AudioManager : MonoBehaviour
         if (bgmSource == null)
             return;
 
-        bgmSource.Stop();
-        bgmSource.clip = null;
-    }
+        bgmFadeTween?.Kill();
+        bgmFadeTween = null;
 
+        if (!bgmSource.isPlaying)
+        {
+            bgmSource.clip = null;
+            bgmSource.volume = 1f;
+            return;
+        }
+
+        bgmFadeTween = bgmSource
+            .DOFade(0f, fadeOutDuration)
+            .SetEase(Ease.InSine)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                bgmSource.Stop();
+                bgmSource.clip = null;
+
+                // 다음 재생을 위한 기본값 복구
+                bgmSource.volume = 1f;
+                bgmFadeTween = null;
+            });
+    }
+    
     public void PauseBGM()
     {
         if (bgmSource == null)
@@ -289,5 +372,6 @@ public class AudioManager : MonoBehaviour
     {
         if (Instance == this)
             Instance = null;
+        bgmFadeTween?.Kill();
     }
 }

@@ -152,7 +152,7 @@ public class NPCManager : MonoBehaviour
     public void EnterStep1()
     {
         confirmPanel.SetActive(false);
-        
+        AudioManager.Instance.PlayBGM(BGMType.Deduction);
         background.gameObject.SetActive(true);
         background.DOFade(250.0f / 255f, 0.3f);
         
@@ -181,7 +181,7 @@ public class NPCManager : MonoBehaviour
         
         GameManager.Instance.CanUseInventory = true;
         GameManager.Instance.CanUseOption = true;
-        
+        AudioManager.Instance.PlayBGM(BGMType.Ppuang);
         background.DOFade(0f, 0.3f).OnComplete(()=>background.gameObject.SetActive(false));
     }
 
@@ -303,6 +303,8 @@ public class NPCManager : MonoBehaviour
         }
     }
 
+    private int noneCount = 0;
+
     private async UniTaskVoid DoDeduction()
     {
         inputDialogue.SetActive(false);
@@ -335,24 +337,44 @@ public class NPCManager : MonoBehaviour
         {
             "조수들은 이 진술에 대해 어떻게 생각하지?"
         };
-        await PlayDialogue(s, monkeySprite, "탐정");
+        await PlayDialogue(s, monkeySprite, "미스터 A");
 
         deductionResultText.text = "범인 : " + deductionOutput.culprit + "\n" + "\n" +
                                    "동기 : " + deductionOutput.motive + "\n" + "\n";
-        string methodString = "수법 : " + deductionOutput.scene;
+        string method = "불명확";
+        noneCount = 0;
+        string methodString = "";
+        if (deductionOutput.time != "불명확" && deductionOutput.time != "해당 없음")
+            methodString += deductionOutput.scene + "\n";
+        else
+            ++noneCount;
         if (deductionOutput.time != "불명확" && deductionOutput.time != "해당 없음")
             methodString += deductionOutput.time + "\n";
+        else
+            ++noneCount;
         if (deductionOutput.accessMethod != "불명확" && deductionOutput.accessMethod != "해당 없음")
             methodString += deductionOutput.accessMethod + "\n";
+        else
+            ++noneCount;
         if (deductionOutput.coreAction != "불명확" && deductionOutput.coreAction != "해당 없음")
             methodString += deductionOutput.coreAction + "\n";
+        else
+            ++noneCount;
         if (deductionOutput.originalStatus != "불명확" && deductionOutput.originalStatus != "해당 없음")
             methodString += deductionOutput.originalStatus + "\n";
+        else
+            ++noneCount;
         if (deductionOutput.copyDestination != "불명확" && deductionOutput.copyDestination != "해당 없음")
             methodString += deductionOutput.copyDestination + "\n";
+        else
+            ++noneCount;
         if (deductionOutput.tasteGapReason != "불명확" && deductionOutput.tasteGapReason != "해당 없음")
             methodString += deductionOutput.tasteGapReason;
-        deductionResultText.text += methodString;
+        else
+            ++noneCount;
+        if (!string.IsNullOrEmpty(methodString))
+            method = methodString;
+        deductionResultText.text += method;
         
         deductionResultBackground.gameObject.SetActive(true);
         deductionResultBackground.DOFade(0f, 0f);
@@ -381,27 +403,32 @@ public class NPCManager : MonoBehaviour
         input.solution = solution;
         var t = AISystemManager.Instance.AI.Evaluator.EvaluateAsync(input);
         
-        await PlayDialogue(s, monkeySprite, "탐정");
+        await PlayDialogue(s, monkeySprite, "미스터 A");
         var result = await t;
 
         float score = CalculateScore(result);
         List<string> response;
         Sprite sticker;
+        SFXType type = SFXType.BadEnding;
         if (score < resultData.NormalScore)
         {
             response = resultData.BadResponse;
             sticker = resultData.BadSticker;
+            type = SFXType.BadEnding;
         }
         else if (score < resultData.GoodScore)
         {
             response = resultData.NormalResponse;
             sticker = resultData.NormalSticker;
+            type =  SFXType.NormalEnding;
         }
         else
         {
             response = resultData.GoodResponse;
             sticker = resultData.GoodSticker;
+            type = SFXType.GoodEnding;
         }
+        AudioManager.Instance.StopBGM();
 
         await UniTask.NextFrame();
         await PlayDialogue(response, clientSprite, clientName);
@@ -413,6 +440,10 @@ public class NPCManager : MonoBehaviour
         foreach (var i in evaluationWeights)
             sum += i;
         resultText.text = (score*100f).ToString() + " 점 / " + (sum*100f).ToString() + " 점";
+        AudioManager.Instance.PlaySFX(SFXType.EndingStamp);
+        AudioManager.Instance.PlaySFX(type);
+        resultSticker.DOFade(0f, 0f);
+        resultSticker.DOFade(1f, 0.3f);
         resultSticker.sprite = sticker;
         resultSticker.SetNativeSize();
     }
@@ -436,7 +467,9 @@ public class NPCManager : MonoBehaviour
             .Sum(claim => claim.penalty);
 
         float finalScore = Mathf.Clamp01(sum - misleadingPenalty);
-        return sum;
+        if (noneCount >= 3)
+            finalScore = Mathf.Clamp01(finalScore - 0.2f);
+        return finalScore;
     }
     
     private static List<string> SplitSentences(string text)

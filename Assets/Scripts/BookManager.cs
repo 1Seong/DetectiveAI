@@ -34,6 +34,7 @@ public class BookManager : MonoBehaviour
 
     public void OpenBook()
     {
+        AudioManager.Instance.PlaySFX(SFXType.BookOpen);
         GameManager.Instance.CanUseInventory = false;
         GameManager.Instance.CanUseOption = false;
         background.gameObject.SetActive(true);
@@ -46,6 +47,7 @@ public class BookManager : MonoBehaviour
 
     public void CloseBook()
     {
+        AudioManager.Instance.PlaySFX(SFXType.BookClose);
         background.DOFade(0f, 0.5f);
         bookPanel.DOLocalMoveY(-1200f, 0.5f).SetEase(Ease.InQuart).OnComplete(() =>
         {

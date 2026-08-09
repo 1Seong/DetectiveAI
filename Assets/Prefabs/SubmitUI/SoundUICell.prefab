@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 1119879564752242993}
   - component: {fileID: 1239904203805478352}
   - component: {fileID: 892589145883034341}
+  - component: {fileID: -8650670530663542363}
   m_Layer: 5
   m_Name: SoundUICell
   m_TagString: Untagged
@@ -236,3 +237,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SubmitAudioUICell
   image: {fileID: 3648172120920469485}
+--- !u!114 &-8650670530663542363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7333554731445692352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4aa502706b17e449c705014a7b0441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayAudioButton
+  buttonType: 12

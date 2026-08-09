@@ -23,6 +23,11 @@ public class TutorialManager : MonoBehaviour
             instance = this;
     }
 
+    private void OnDestroy()
+    {
+        instance = null;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
     {

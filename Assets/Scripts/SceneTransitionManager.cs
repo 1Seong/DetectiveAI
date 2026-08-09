@@ -101,6 +101,7 @@ public class SceneTransitionManager : MonoBehaviour
 
         try
         {
+            AudioManager.Instance.StopBGM();
             await FadeOutAsync(cancellationToken);
 
             AsyncOperation operation =
@@ -118,6 +119,14 @@ public class SceneTransitionManager : MonoBehaviour
                 PlayerLoopTiming.LastPostLateUpdate,
                 cancellationToken
             );
+            BGMType type = BGMType.MainMenu;
+            if (sceneName == "SampleScene")
+                type = BGMType.Ppuang;
+            else if (sceneName == "MainMenu")
+                type = BGMType.MainMenu;
+            else if (sceneName == "Opening")
+                type = BGMType.Opening;
+            AudioManager.Instance.PlayBGM(type);
 
             await FadeInAsync(cancellationToken);
         }

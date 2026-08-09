@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 8506872014820456729}
   - component: {fileID: 4156406570913202526}
   - component: {fileID: 1967186730106187022}
+  - component: {fileID: 1911921283011461733}
   m_Layer: 5
   m_Name: SubmitCell
   m_TagString: Untagged
@@ -386,3 +387,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SubmitUICell
   image: {fileID: 6450743640078700660}
   rawImage: {fileID: 370624904854899106}
+--- !u!114 &1911921283011461733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011885960120882441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4aa502706b17e449c705014a7b0441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayAudioButton
+  buttonType: 12

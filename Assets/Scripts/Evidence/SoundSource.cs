@@ -6,13 +6,16 @@ using UnityEngine.UI;
 public class SoundSource : MonoBehaviour
 {
     public Sprite sprite;
-    public AudioClip clip;
+    public SFXType type;
+    public bool isLoop = false;
+    public float loopCycle = 0f;
     public EvidenceData data;
     [TextArea]
     public string desc;
 
     private bool isCollected = false;
     private Button button;
+    private float sfxTime = 0;
 
     private void Awake()
     {
@@ -22,6 +25,21 @@ public class SoundSource : MonoBehaviour
     private void OnEnable()
     {
         InventoryManager.instance.AddSoundButton(button);
+        AudioManager.Instance.PlaySFX(type);
+        sfxTime = 0;
+    }
+
+    private void Update()
+    {
+        if (isLoop)
+        {
+            sfxTime += Time.deltaTime;
+            if (sfxTime > loopCycle)
+            {
+                AudioManager.Instance.PlaySFX(type);
+                sfxTime = 0;
+            }
+        }
     }
 
     private void OnDisable()

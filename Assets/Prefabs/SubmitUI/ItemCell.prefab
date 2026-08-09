@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 7623114948604217658}
   - component: {fileID: 5959216090971148927}
   - component: {fileID: 7494787099434292930}
+  - component: {fileID: 2555792532069448871}
   m_Layer: 5
   m_Name: ItemCell
   m_TagString: Untagged
@@ -223,3 +224,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2555792532069448871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294501644786826184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4aa502706b17e449c705014a7b0441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayAudioButton
+  buttonType: 12

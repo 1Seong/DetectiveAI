@@ -4,20 +4,25 @@ using UnityEngine;
 
 public enum SFXType
 {
-    ButtonClick,
-    Dialogue,
-    EvidenceSelected,
-    DeductionStart,
-    DeductionSuccess,
-    DeductionFail
+    Fridge, Gossip, Complaint,
+    AngeleNotFound,
+    ChamielCapture, ChamielDelete,
+    BagOpen, BagClose,
+    BookOpen, BookClose, BagTab,
+    Move,
+    PaperButton, NormalButton,
+    EndingStamp,
+    GoodEnding, NormalEnding, BadEnding,
+    FridgeHighPitch, GossipHighPitch, ComplaintHighPitch
 }
 
 public enum BGMType
 {
-    Main,
-    Investigation,
+    MainMenu,
+    Opening,
+    Ppuang, Chocolat, Alley,
     Deduction,
-    Result
+    Credit
 }
 
 [CreateAssetMenu(fileName = "AudioLibrary", menuName = "Scriptable Objects/AudioLibrary")]
@@ -29,7 +34,7 @@ public class AudioLibrary : ScriptableObject
         public SFXType type;
         public AudioClip clip;
 
-        [Range(0f, 1f)]
+        [Range(0f, 2f)]
         public float volumeScale = 1f;
     }
 

@@ -230,6 +230,7 @@ public class ScreenShotSelectionController :
             Vector3.one * startScale;
 
         croppedImage.transform.position = selectedRect.center;
+        AudioManager.Instance.PlaySFX(SFXType.ChamielCapture);
         await resultRect
             .DOScale(1f, popDuration)
             .SetEase(Ease.OutBack)

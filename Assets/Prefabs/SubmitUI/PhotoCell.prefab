@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 89583116427581274}
   - component: {fileID: 6804244917506324259}
   - component: {fileID: 341528940200715774}
+  - component: {fileID: 1987812175511393870}
   m_Layer: 5
   m_Name: PhotoCell
   m_TagString: Untagged
@@ -148,6 +149,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SubmitPhotoUICell
   image: {fileID: 8967788703019998774}
+--- !u!114 &1987812175511393870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922683043473730675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4aa502706b17e449c705014a7b0441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayAudioButton
+  buttonType: 12
 --- !u!1 &1699507982739728602
 GameObject:
   m_ObjectHideFlags: 0

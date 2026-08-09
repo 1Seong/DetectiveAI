@@ -207,6 +207,7 @@ public class InventoryManager : MonoBehaviour
 
     public async UniTaskVoid DeletePhotoAsync()
     {
+        AudioManager.Instance.PlaySFX(SFXType.ChamielDelete);
         int DissolveAmountId = Shader.PropertyToID("_Progress");
         int RectSizeId = Shader.PropertyToID("_RectSize");
         var dissolveMaterial = zoomRawImg.material;
@@ -276,6 +277,7 @@ public class InventoryManager : MonoBehaviour
 
         GameManager.Instance.CanUseInventory = false;
         GameManager.Instance.CanUseOption = false;
+        footButton.SetActive(false);
         parrotText.text = "기억할 소리를 선택하세요";
         parrotImg.sprite = normalParrot;
         parrotImg.SetNativeSize();
@@ -293,6 +295,7 @@ public class InventoryManager : MonoBehaviour
         GameManager.Instance.CanUseOption = true;
         soundNoneArea.SetActive(false);
         exitSoundButton.SetActive(false);
+        footButton.SetActive(true);
         foreach(var o in hideObjects)
             o.SetActive(true);
         foreach (var b in soundObjects)
@@ -320,6 +323,7 @@ public class InventoryManager : MonoBehaviour
 
     public void ClickNonSound()
     {
+        AudioManager.Instance.PlaySFX(SFXType.AngeleNotFound);
         parrotText.text = "거기엔 아무 소리도 들리지 않아요...";
         parrotImg.sprite = sadParrot;
         parrotImg.SetNativeSize();
@@ -341,6 +345,7 @@ public class InventoryManager : MonoBehaviour
         
         if (isInventoryOpened)
         {
+            AudioManager.Instance.PlaySFX(SFXType.BagClose);
             footButton.SetActive(true);
             bagImage.sprite = normalBag;
             bagImage.SetNativeSize();
@@ -355,6 +360,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.PlaySFX(SFXType.BagOpen);
             footButton.SetActive(false);
             bagImage.sprite = openedBag;
             bagImage.SetNativeSize();
