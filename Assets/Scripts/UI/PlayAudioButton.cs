@@ -8,7 +8,7 @@ public class PlayAudioButton : MonoBehaviour
     
     private void Awake()
     {
-        GetComponent<Button>().onClick.AddListener(OnClick);
+        GetComponentInChildren<Button>().onClick.AddListener(OnClick);
     }
 
     public void OnClick()

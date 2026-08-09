@@ -331,18 +331,21 @@ public class NPCManager : MonoBehaviour
         input.backgroundFacts = backgroundFacts.Facts;
         deductionOutput = await AISystemManager.Instance.AI.Detective.DeduceAsync(input);
         
-        finalLoadingPanel.DOFade(0f, 0.3f).OnComplete(()=>finalLoadingPanel.gameObject.SetActive(false));
+        finalLoadingPanel.gameObject.SetActive(false);
 
         var s = new List<string>()
         {
             "조수들은 이 진술에 대해 어떻게 생각하지?"
         };
         await PlayDialogue(s, monkeySprite, "미스터 A");
-
+        noneCount = 0;
         deductionResultText.text = "범인 : " + deductionOutput.culprit + "\n" + "\n" +
                                    "동기 : " + deductionOutput.motive + "\n" + "\n";
+        if (deductionOutput.culprit == "불명확" || deductionOutput.culprit == "해당 없음")
+            ++noneCount;
+        if (deductionOutput.motive == "불명확" || deductionOutput.motive == "해당 없음")
+            ++noneCount;
         string method = "불명확";
-        noneCount = 0;
         string methodString = "";
         if (deductionOutput.time != "불명확" && deductionOutput.time != "해당 없음")
             methodString += deductionOutput.scene + "\n";
@@ -374,7 +377,7 @@ public class NPCManager : MonoBehaviour
             ++noneCount;
         if (!string.IsNullOrEmpty(methodString))
             method = methodString;
-        deductionResultText.text += method;
+        deductionResultText.text += "수법 : " + method;
         
         deductionResultBackground.gameObject.SetActive(true);
         deductionResultBackground.DOFade(0f, 0f);
@@ -468,7 +471,7 @@ public class NPCManager : MonoBehaviour
 
         float finalScore = Mathf.Clamp01(sum - misleadingPenalty);
         if (noneCount >= 3)
-            finalScore = Mathf.Clamp01(finalScore - 0.2f);
+            finalScore = Mathf.Clamp01(finalScore - 0.3f);
         return finalScore;
     }
     

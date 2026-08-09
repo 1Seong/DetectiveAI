@@ -83,13 +83,21 @@ public class GameManager : MonoBehaviour
         SceneTransitionManager.Instance.ChangeSceneAsync("MainMenu").Forget();
     }
 
+    private AudioClip prevClip;
+
     public void OpenCredit()
     {
         creditPanel.SetActive(true);
+        prevClip = AudioManager.Instance.GetBGM();
+        AudioManager.Instance.PlayBGM(BGMType.Credit);
     }
 
     public void CloseCredit()
     {
         creditPanel.SetActive(false);
+        if(prevClip != null)
+            AudioManager.Instance.PlayBGM(prevClip);
+        else
+            AudioManager.Instance.StopBGM();
     }
 }

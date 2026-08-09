@@ -374,4 +374,9 @@ public class AudioManager : MonoBehaviour
             Instance = null;
         bgmFadeTween?.Kill();
     }
+
+    public AudioClip GetBGM()
+    {
+        return bgmSource.clip;
+    }
 }
