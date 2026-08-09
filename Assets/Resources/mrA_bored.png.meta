@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b9c19d16522f2374a91c364402d582aa
+guid: 12825410ca07f7443b0ddd8cfd1d0285
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8271463784619342320
-    second: "\uC2A4\uD06C\uB9B0\uC0F7 2026-08-01 171526_0"
+      213: -2913789127841865731
+    second: mrA_bored_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 190
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,17 +109,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uC2A4\uD06C\uB9B0\uC0F7 2026-08-01 171526_0"
+      name: mrA_bored_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 87
-        height: 98
+        width: 781
+        height: 998
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0f97ebeec742ac270800000000000000
-      internalID: 8271463784619342320
+      spriteID: dff1794e9342097d0800000000000000
+      internalID: -2913789127841865731
       vertices: []
       indices: 
       edges: []
@@ -148,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\uC2A4\uD06C\uB9B0\uC0F7 2026-08-01 171526_0": 8271463784619342320
+      mrA_bored_0: -2913789127841865731
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
