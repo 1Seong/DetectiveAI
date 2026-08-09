@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d055b9edbd3ea745921682c46c60f7b, type: 3}
   m_Name: PageData5 2
   m_EditorClassIdentifier: Assembly-CSharp::PageData
-  name: "\uBE0C\uB9AC\uC624\uC288"
-  desc: "\uBE0C\uB9AC\uC624\uC288"
+  name: "\uC1FC\uCF5C\uB77C"
+  desc: "\uC058\uC559\uBE75\uC9D1\uC758 \uB77C\uC774\uBC8C, \uC1FC\uCF5C\uB77C \uD398\uC2A4\uCE04\uB9AC\uC758
+    \uC0AC\uC7A5. \uACFC\uAC70 \uC058\uC559\uBE75\uC9D1\uC758 \uC9C1\uC6D0\uC774\uC5C8\uC73C\uBA70, 
+    \uD669\uAE08\uBC14\uAC8C\uD2B8\uC640 \uAC70\uC758 \uB611\uAC19\uC740 \uC2E0\uBA54\uB274\uB97C
+    \uCD9C\uC2DC\uD588\uB2E4."

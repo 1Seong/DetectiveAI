@@ -28,6 +28,8 @@ public class ScreenShotSelectionController :
     [SerializeField] private RectTransform dimLeft;
     [SerializeField] private RectTransform dimRight;
 
+    [SerializeField] private CanvasGroup fullText;
+
     [Header("Capture")]
     [SerializeField] private GameObject[] hideWhileCapturing;
 
@@ -75,7 +77,7 @@ public class ScreenShotSelectionController :
         
         if (InventoryManager.instance.IsPhotoMax())
         {
-            // TODO : 경고 알림
+            ShowFullText().Forget();
             return;
         }
         
@@ -85,6 +87,20 @@ public class ScreenShotSelectionController :
         EnterScreenshotModeAsync(
             this.GetCancellationTokenOnDestroy()
         ).Forget();
+    }
+
+    private bool isShowingFullText = false;
+
+    private async UniTask ShowFullText()
+    {
+        if (isShowingFullText) return;
+        isShowingFullText = true;
+        fullText.gameObject.SetActive(true);
+        await fullText.DOFade(1f, 0.3f).ToUniTask();
+        await UniTask.WaitForSeconds(2f);
+        await fullText.DOFade(0f, 0.3f).ToUniTask();
+        fullText.gameObject.SetActive(false);
+        isShowingFullText = false;
     }
 
     private async UniTask EnterScreenshotModeAsync(

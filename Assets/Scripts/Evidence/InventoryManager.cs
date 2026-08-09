@@ -126,12 +126,9 @@ public class InventoryManager : MonoBehaviour
             return;
 
         bagButton.DOKill();
-        
-        bagButton.DOScale(1f, 0.3f).OnComplete(() =>
-        {
-            bagImage.sprite = normalBag;
-            bagImage.SetNativeSize();
-        });
+        bagImage.sprite = normalBag;
+        bagImage.SetNativeSize();
+        bagButton.DOScale(1f, 0.3f);
     }
     
     #region Photo

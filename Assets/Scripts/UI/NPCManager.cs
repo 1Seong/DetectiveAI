@@ -122,8 +122,10 @@ public class NPCManager : MonoBehaviour
     {
         List<string> dialogue = new()
         {
-            "도대체 누가 이런 짓을...",
-            "혹시 범인을 알아내신 건가요?!"
+            "레시피 노트를 도둑맞았다고 생각했는데... 다시 보니 책장에 꽂혀는 있었어요.",
+            "하지만 제가 늘 꽂아두는 곳이 아닌 완전히 다른 곳에 있는 게 좀 이상하긴 했죠.",
+            "그나저나...",
+            "설마 벌써 범인을 알아내신 건가요?!"
         };
 
         await PlayDialogue(dialogue, clientSprite, clientName);
