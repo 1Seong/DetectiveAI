@@ -31,6 +31,8 @@
         display: block;
         width: 100%;
         height: 100%;
+        aspect-ratio: 16 / 9;
+        box-sizing: border-box;
         background: #231F20;
       }
 
@@ -41,7 +43,7 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1960 height=1080 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
