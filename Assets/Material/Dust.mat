@@ -74,7 +74,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _FadeColor: {r: 0.88140154, g: 0.88140154, b: 0.88140154, a: 1}
-    - _RectSize: {r: 800, g: 600, b: 0, a: 0}
+    - _RectSize: {r: 501, g: 224, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

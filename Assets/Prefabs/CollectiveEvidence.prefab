@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 716544943768594093}
   - component: {fileID: 5394010648393763760}
   - component: {fileID: 2356752511667638233}
+  - component: {fileID: 298430394519819364}
   m_Layer: 5
   m_Name: CollectiveEvidence
   m_TagString: Untagged
@@ -151,3 +152,21 @@ MonoBehaviour:
   moveUpDis: 40
   moveUpDur: 0.4
   moveToBagDur: 0.9
+--- !u!114 &298430394519819364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3813403932576429628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2710565321cf52449359e510b63a1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverScale
+  hoverScale: 1.08
+  pressedScale: 0.96
+  hoverDuration: 0.15
+  pressDuration: 0.08
+  hoverEase: 27
+  normalEase: 6

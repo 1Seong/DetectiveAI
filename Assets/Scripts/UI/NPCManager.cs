@@ -442,7 +442,7 @@ public class NPCManager : MonoBehaviour
         float sum = 0;
         foreach (var i in evaluationWeights)
             sum += i;
-        resultText.text = (score*100f).ToString() + " 점 / " + (sum*100f).ToString() + " 점";
+        resultText.text = score.ToString() + " 점 / " + "100 점";
         AudioManager.Instance.PlaySFX(SFXType.EndingStamp);
         AudioManager.Instance.PlaySFX(type);
         resultSticker.DOFade(0f, 0f);
@@ -451,9 +451,29 @@ public class NPCManager : MonoBehaviour
         resultSticker.SetNativeSize();
     }
 
-    private float CalculateScore(DeductionEvaluationResult result)
+    private int CalculateScore(DeductionEvaluationResult result)
     {
         float sum = 0;
+        float culprit = result.culpritScore * evaluationWeights[0];
+        Debug.Log(culprit.ToString() + "/" + evaluationWeights[0].ToString());
+        float motive = result.motiveScore * evaluationWeights[1];
+        Debug.Log(motive.ToString() + "/" + evaluationWeights[1].ToString());
+        float scene = result.sceneScore * evaluationWeights[2];
+        Debug.Log(scene.ToString() + "/" + evaluationWeights[2].ToString());
+        float time = result.timeScore * evaluationWeights[3];
+        Debug.Log(time.ToString() + "/" + evaluationWeights[3].ToString());
+        float accessMethod =  result.accessMethodScore * evaluationWeights[4];
+        Debug.Log(accessMethod.ToString() + "/" + evaluationWeights[4].ToString());
+        float coreAction =  result.coreActionScore * evaluationWeights[5];
+        Debug.Log(coreAction.ToString() + "/" + evaluationWeights[5].ToString());
+        float originalStatus =  result.originalStatusScore * evaluationWeights[6];
+        Debug.Log(originalStatus.ToString() + "/" + evaluationWeights[6].ToString());
+        float copyDestination =  result.copyDestinationScore * evaluationWeights[7];
+        Debug.Log(copyDestination.ToString() + "/" + evaluationWeights[7].ToString());
+        float tasteGap =   result.tasteGapReasonScore * evaluationWeights[8];
+        Debug.Log(tasteGap.ToString() + "/" + evaluationWeights[8].ToString());
+        
+        
         sum += result.culpritScore * evaluationWeights[0];
         sum += result.motiveScore * evaluationWeights[1];
         sum += result.sceneScore * evaluationWeights[2];
@@ -468,11 +488,17 @@ public class NPCManager : MonoBehaviour
             .Where(claim =>
                 result.detectedMisleadingClaims.Contains(claim.claimId))
             .Sum(claim => claim.penalty);
+        foreach(var s in result.detectedMisleadingClaims)
+            Debug.Log("함정 주장 탐지: " + s);
 
         float finalScore = Mathf.Clamp01(sum - misleadingPenalty);
         if (noneCount >= 3)
-            finalScore = Mathf.Clamp01(finalScore - 0.3f);
-        return finalScore;
+        {
+            Debug.Log("불명확 감점");
+            finalScore = Mathf.Clamp01(finalScore - 0.2f);
+        }
+
+        return Mathf.CeilToInt(finalScore * 100);
     }
     
     private static List<string> SplitSentences(string text)

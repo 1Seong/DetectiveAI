@@ -18,11 +18,12 @@ public class CollectiveEvidence : MonoBehaviour
         InventoryManager.instance.AddCollectible(this);
         
         GetComponent<Button>().enabled = false;
+        GetComponent<ButtonHoverScale>().enabled = false;
         var seq =  DOTween.Sequence();
         seq.Append(transform.DOMoveY(transform.position.y + moveUpDis, moveUpDur).SetEase(Ease.OutBack));
         seq.AppendCallback(InventoryManager.instance.ScaleUpBagButton);
         seq.Append(transform.DOMove(InventoryManager.instance.GetBagButtonPos(), moveToBagDur).SetEase(Ease.InCubic));
-        seq.Join(transform.DOScale(transform.localScale.x * 0.2f, moveToBagDur).SetEase(Ease.InCubic).OnComplete(()=>gameObject.SetActive(false)));
+        seq.Join(transform.DOScale(0f, moveToBagDur).SetEase(Ease.InCubic).OnComplete(()=>gameObject.SetActive(false)));
         seq.Join(GetComponent<Image>().DOFade(0f, moveToBagDur).SetEase(Ease.InCubic));
         seq.AppendCallback(InventoryManager.instance.ScaleDownBagButton);
     }

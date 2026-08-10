@@ -286,7 +286,11 @@ public class InventoryManager : MonoBehaviour
         foreach(var o in hideObjects)
             o.SetActive(false);
         foreach (var b in soundObjects)
+        {
             b.enabled = true;
+            if(b.transform.childCount > 0)
+                b.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 
     public void ExitSoundMode()
@@ -299,7 +303,11 @@ public class InventoryManager : MonoBehaviour
         foreach(var o in hideObjects)
             o.SetActive(true);
         foreach (var b in soundObjects)
+        {
             b.enabled = false;
+            if(b.transform.childCount > 0)
+                b.transform.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     public void AddSound(SoundSource sound)
