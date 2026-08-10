@@ -339,45 +339,41 @@ public class NPCManager : MonoBehaviour
         };
         await PlayDialogue(s, monkeySprite, "미스터 A");
         noneCount = 0;
-        deductionResultText.text = "범인 : " + deductionOutput.culprit + "\n" + "\n" +
-                                   "동기 : " + deductionOutput.motive + "\n" + "\n";
+        deductionResultText.text = "<u>범인</u> : " + deductionOutput.culprit + "\n" + "\n" +
+                                   "<u>동기</u> : " + deductionOutput.motive + "\n" + "\n";
         if (deductionOutput.culprit == "불명확" || deductionOutput.culprit == "해당 없음")
             ++noneCount;
         if (deductionOutput.motive == "불명확" || deductionOutput.motive == "해당 없음")
             ++noneCount;
-        string method = "불명확";
-        string methodString = "";
-        if (deductionOutput.time != "불명확" && deductionOutput.time != "해당 없음")
-            methodString += deductionOutput.scene + "\n";
+        
+        if (deductionOutput.scene != "불명확" && deductionOutput.scene != "해당 없음")
+            deductionResultText.text += "<u>어디서?</u> : " + deductionOutput.scene + "\n";
         else
             ++noneCount;
         if (deductionOutput.time != "불명확" && deductionOutput.time != "해당 없음")
-            methodString += deductionOutput.time + "\n";
+            deductionResultText.text += "<u>언제?</u> : " + deductionOutput.time + "\n";
         else
             ++noneCount;
         if (deductionOutput.accessMethod != "불명확" && deductionOutput.accessMethod != "해당 없음")
-            methodString += deductionOutput.accessMethod + "\n";
+            deductionResultText.text += "<u>출입은?</u> : " + deductionOutput.accessMethod + "\n";
         else
             ++noneCount;
         if (deductionOutput.coreAction != "불명확" && deductionOutput.coreAction != "해당 없음")
-            methodString += deductionOutput.coreAction + "\n";
+            deductionResultText.text += "<u>어떻게?</u> : " +  deductionOutput.coreAction + "\n";
         else
             ++noneCount;
         if (deductionOutput.originalStatus != "불명확" && deductionOutput.originalStatus != "해당 없음")
-            methodString += deductionOutput.originalStatus + "\n";
+            deductionResultText.text += "<u>노트의 상태는?</u> : " + deductionOutput.originalStatus + "\n";
         else
             ++noneCount;
         if (deductionOutput.copyDestination != "불명확" && deductionOutput.copyDestination != "해당 없음")
-            methodString += deductionOutput.copyDestination + "\n";
+            deductionResultText.text += "<u>누구에게?</u> : " + deductionOutput.copyDestination + "\n";
         else
             ++noneCount;
         if (deductionOutput.tasteGapReason != "불명확" && deductionOutput.tasteGapReason != "해당 없음")
-            methodString += deductionOutput.tasteGapReason;
+            deductionResultText.text += "<u>???</u> : " +  deductionOutput.tasteGapReason;
         else
             ++noneCount;
-        if (!string.IsNullOrEmpty(methodString))
-            method = methodString;
-        deductionResultText.text += "수법 : " + method;
         
         deductionResultBackground.gameObject.SetActive(true);
         deductionResultBackground.DOFade(0f, 0f);
@@ -467,6 +463,7 @@ public class NPCManager : MonoBehaviour
         Debug.Log(culprit.ToString() + "/" + evaluationWeights[0].ToString());
         float motive = result.motiveScore * evaluationWeights[1];
         Debug.Log(motive.ToString() + "/" + evaluationWeights[1].ToString());
+        
         float scene = result.sceneScore * evaluationWeights[2];
         Debug.Log(scene.ToString() + "/" + evaluationWeights[2].ToString());
         float time = result.timeScore * evaluationWeights[3];

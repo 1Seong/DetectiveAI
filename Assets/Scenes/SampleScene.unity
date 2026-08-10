@@ -7553,9 +7553,17 @@ PrefabInstance:
         \uBB3B\uC5B4\uBC84\uB9B4 \uC815\uB3C4\uB85C \uD06C\uB2E4!"
       objectReference: {fileID: 0}
     - target: {fileID: 2474414466593648619, guid: 97cef2084d9fc6d469e72beb8b351858, type: 3}
+      propertyPath: isLoop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474414466593648619, guid: 97cef2084d9fc6d469e72beb8b351858, type: 3}
       propertyPath: sprite
       value: 
       objectReference: {fileID: 21300000, guid: 96ebdd407b3226e42a4a2093c18010a9, type: 3}
+    - target: {fileID: 2474414466593648619, guid: 97cef2084d9fc6d469e72beb8b351858, type: 3}
+      propertyPath: loopCycle
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2479481486475115984, guid: 97cef2084d9fc6d469e72beb8b351858, type: 3}
       propertyPath: m_Name
       value: SoundSource
@@ -20859,6 +20867,7 @@ MonoBehaviour:
   sfxVolume: 1
   fadeInDuration: 0.5
   fadeOutDuration: 0.5
+  bgmBaseVolume: 0.5
 --- !u!4 &1124178576
 Transform:
   m_ObjectHideFlags: 0

@@ -1131,7 +1131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 710e4d1803d70424bab5619419970590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
-  dialogueCsv: {fileID: 4900000, guid: 47e6e66562323f943af77335e5823664, type: 3}
+  dialogueCsv: {fileID: 4900000, guid: f7ee25c047a63144c9c3bf2e4b05747b, type: 3}
   textAnimator: {fileID: 1847169833}
   background: {fileID: 1606048782}
   speaker: {fileID: 1644442606}
@@ -1885,6 +1885,7 @@ MonoBehaviour:
   sfxVolume: 1
   fadeInDuration: 0.5
   fadeOutDuration: 0.5
+  bgmBaseVolume: 0.5
 --- !u!82 &284325947
 AudioSource:
   m_ObjectHideFlags: 0

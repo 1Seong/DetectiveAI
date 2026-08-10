@@ -1232,6 +1232,7 @@ MonoBehaviour:
   sfxVolume: 1
   fadeInDuration: 0.5
   fadeOutDuration: 0.5
+  bgmBaseVolume: 0.5
 --- !u!82 &284325947
 AudioSource:
   m_ObjectHideFlags: 0

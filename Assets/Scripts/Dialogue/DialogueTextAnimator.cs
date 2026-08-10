@@ -80,7 +80,7 @@ public class DialogueTextAnimator : MonoBehaviour
         await UniTask.WaitUntil(
             () =>
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (IsAdvanceInputDown())
                 {
                     advancedBySpace = true;
                     return true;
@@ -495,5 +495,17 @@ public class DialogueTextAnimator : MonoBehaviour
 
         isRevealing = false;
         skipRequested = false;
+    }
+    
+    bool IsAdvanceInputDown()
+    {
+        return Input.GetKeyDown(KeyCode.Space)
+               || Input.GetMouseButtonDown(0);
+    }
+
+    bool IsAdvanceInputHeld()
+    {
+        return Input.GetKey(KeyCode.Space)
+               || Input.GetMouseButton(0);
     }
 }

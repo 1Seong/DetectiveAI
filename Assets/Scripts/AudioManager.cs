@@ -37,7 +37,8 @@ public class AudioManager : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float fadeOutDuration = 0.5f;
     
-    
+    [SerializeField, Range(0f, 1f)]
+    private float bgmBaseVolume = 0.6f;
 
     private bool isMasterMuted;
     private bool isBGMMuted;
@@ -240,6 +241,7 @@ public class AudioManager : MonoBehaviour
 
         bgmFadeTween?.Kill();
         bgmFadeTween = null;
+        bgmSource.volume = bgmBaseVolume;
 
         // 같은 BGM이면 재시작하지 않고 목표 음량으로 복구합니다.
         if (bgmSource.clip == clip && bgmSource.isPlaying)
@@ -275,7 +277,7 @@ public class AudioManager : MonoBehaviour
 
             sequence.Append(
                 bgmSource
-                    .DOFade(1f, fadeInDuration)
+                    .DOFade(bgmBaseVolume, fadeInDuration)
                     .SetEase(Ease.OutSine)
             );
 
@@ -291,7 +293,7 @@ public class AudioManager : MonoBehaviour
             bgmSource.Play();
 
             bgmFadeTween = bgmSource
-                .DOFade(1f, fadeInDuration)
+                .DOFade(bgmBaseVolume, fadeInDuration)
                 .SetEase(Ease.OutSine)
                 .SetUpdate(true)
                 .OnComplete(() => bgmFadeTween = null);
