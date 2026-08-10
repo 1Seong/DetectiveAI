@@ -118,4 +118,4 @@ ProjectSettings/   # Unity 프로젝트 설정
 
 ## 문서 및 크레딧
 
-AI별 프롬프트 설계, 세부 입출력 정의, 서버 보안 구성과 AI 아트 활용 내역은 [AI 활용 기술 문서](https://docs.google.com/document/d/15dc0hLqwKs7oqSOt1NUf-LCGrmEeYrv-Elw1sJkeeG4/edit?tab=t.0#heading=h.dacdckkmamph)에서 확인할 수 있습니다. 외부 에셋과 오픈소스 출처는 기술 문서 및 게임 내 Credits에 기재했습니다.
+AI별 프롬프트 설계, 세부 입출력 정의, 서버 보안 구성과 AI 아트 활용 내역은 [AI 활용 기술 문서](https://docs.google.com/document/d/1Es3w_wpFFjzdGcQGdQFS40BmH6o13MXi41UEUGg2I3s/edit?tab=t.0)에서 확인할 수 있습니다. 외부 에셋과 오픈소스 출처는 기술 문서 및 게임 내 Credits에 기재했습니다.
