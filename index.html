@@ -55,7 +55,7 @@
       var loaderUrl = buildUrl + "/Detective A&I.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/Detective A&I.data.parts",
+        dataUrl: buildUrl + "/Detective A&I.data.gz",
         frameworkUrl: buildUrl + "/Detective A&I.framework.js.gz",
         codeUrl: buildUrl + "/Detective A&I.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
@@ -71,55 +71,14 @@
         // },
       };
 
-      // Large precompressed files are split to stay within the deployment transport limit.
-      // Reassemble and decompress them as streaming responses for Unity's loader.
+         // GitHub Pages serves the precompressed Unity files without compression headers.
+      // Decompress them in the browser before handing them to Unity's loader.
       const nativeFetch = window.fetch.bind(window);
-      const chunkCounts = {
-        "/Detective A&I.data.parts": 82,
-      };
 
       window.fetch = async (resource, options) => {
         const url = typeof resource === "string" ? resource : resource.url;
-        const chunkedSuffix = Object.keys(chunkCounts).find((suffix) => url.endsWith(suffix));
 
-        if (chunkedSuffix) {
-          if (!("DecompressionStream" in window)) {
-            throw new Error("이 브라우저는 압축된 WebGL 빌드 로딩을 지원하지 않습니다.");
-          }
-
-          let partIndex = 0;
-          const compressedStream = new ReadableStream({
-            async pull(controller) {
-              if (partIndex >= chunkCounts[chunkedSuffix]) {
-                controller.close();
-                return;
-              }
-
-              const partUrl = url + ".part" + String(partIndex).padStart(3, "0");
-              const partResponse = await nativeFetch(partUrl);
-              if (!partResponse.ok) {
-                controller.error(new Error("WebGL 데이터 조각을 불러오지 못했습니다: " + partUrl));
-                return;
-              }
-
-              controller.enqueue(new Uint8Array(await partResponse.arrayBuffer()));
-              partIndex++;
-            },
-          });
-
-          const headers = new Headers();
-          headers.set(
-            "content-type",
-            chunkedSuffix.includes(".wasm.") ? "application/wasm" : "application/octet-stream"
-          );
-
-          return new Response(
-            compressedStream.pipeThrough(new DecompressionStream("gzip")),
-            { status: 200, headers }
-          );
-        }
-
-        const response = await nativeFetch(resource, options);
+     const response = await nativeFetch(resource, options);
 
         if (!url.endsWith(".gz") || !response.ok) {
           return response;
