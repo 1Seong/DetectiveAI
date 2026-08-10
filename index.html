@@ -3,14 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
     <title>Unity Web Player | DetectiveA_I</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=1960 height=1080 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -20,6 +19,7 @@
       <div id="unity-warning"> </div>
       <div id="unity-footer">
         <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
         <div id="unity-build-title">DetectiveA_I</div>
       </div>
     </div>
@@ -55,7 +55,7 @@
       var loaderUrl = buildUrl + "/Detective A&I.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/Detective A&I.data.gz",
+        dataUrl: buildUrl + "/Detective A&I.data.parts",
         frameworkUrl: buildUrl + "/Detective A&I.framework.js.gz",
         codeUrl: buildUrl + "/Detective A&I.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
@@ -71,11 +71,54 @@
         // },
       };
 
-      // GitHub Pages does not attach Content-Encoding to precompressed Unity files.
-      // Decompress them in the browser before Unity's loader consumes the responses.
+      // Large precompressed files are split to stay within the deployment transport limit.
+      // Reassemble and decompress them as streaming responses for Unity's loader.
       const nativeFetch = window.fetch.bind(window);
+      const chunkCounts = {
+        "/Detective A&I.data.parts": 82,
+      };
+
       window.fetch = async (resource, options) => {
         const url = typeof resource === "string" ? resource : resource.url;
+        const chunkedSuffix = Object.keys(chunkCounts).find((suffix) => url.endsWith(suffix));
+
+        if (chunkedSuffix) {
+          if (!("DecompressionStream" in window)) {
+            throw new Error("이 브라우저는 압축된 WebGL 빌드 로딩을 지원하지 않습니다.");
+          }
+
+          let partIndex = 0;
+          const compressedStream = new ReadableStream({
+            async pull(controller) {
+              if (partIndex >= chunkCounts[chunkedSuffix]) {
+                controller.close();
+                return;
+              }
+
+              const partUrl = url + ".part" + String(partIndex).padStart(3, "0");
+              const partResponse = await nativeFetch(partUrl);
+              if (!partResponse.ok) {
+                controller.error(new Error("WebGL 데이터 조각을 불러오지 못했습니다: " + partUrl));
+                return;
+              }
+
+              controller.enqueue(new Uint8Array(await partResponse.arrayBuffer()));
+              partIndex++;
+            },
+          });
+
+          const headers = new Headers();
+          headers.set(
+            "content-type",
+            chunkedSuffix.includes(".wasm.") ? "application/wasm" : "application/octet-stream"
+          );
+
+          return new Response(
+            compressedStream.pipeThrough(new DecompressionStream("gzip")),
+            { status: 200, headers }
+          );
+        }
+
         const response = await nativeFetch(resource, options);
 
         if (!url.endsWith(".gz") || !response.ok) {
@@ -120,27 +163,26 @@
       // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
       // expected to change.
 
-      const GAME_WIDTH = 1920;
-      const GAME_HEIGHT = 1080;
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
 
-      function resizeGameCanvas() {
-        const scale = Math.min(
-          window.innerWidth / GAME_WIDTH,
-          window.innerHeight / GAME_HEIGHT
-        );
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
 
-        const width = Math.max(1, Math.floor(GAME_WIDTH * scale));
-        const height = Math.max(1, Math.floor(GAME_HEIGHT * scale));
-        const container = document.querySelector("#unity-container");
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
 
-        container.style.width = width + "px";
-        container.style.height = height + "px";
-        canvas.style.width = width + "px";
-        canvas.style.height = height + "px";
+
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = "1960px";
+        canvas.style.height = "1080px";
       }
-
-      resizeGameCanvas();
-      window.addEventListener("resize", resizeGameCanvas);
 
       document.querySelector("#unity-loading-bar").style.display = "block";
 
@@ -151,6 +193,10 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
+                document.querySelector("#unity-fullscreen-button").onclick = () => {
+                  document.makeFullscreen('unity-container');
+                };
+
               }).catch((message) => {
                 alert(message);
               });
