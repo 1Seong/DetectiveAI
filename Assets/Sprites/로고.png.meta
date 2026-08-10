@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 5fc86c6306c2cd34d9b808e55e212d8f
+guid: 30753fad0f0861043b35d9cf894ee475
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 204105695825448780
-    second: street_customerChat_sound_0
+      213: 5082900132600422305
+    second: "\u1105\u1169\u1100\u1169_0"
   - first:
-      213: -6316846524213464637
-    second: street_customerChat_sound_1
+      213: -6842336489891577374
+    second: "\u1105\u1169\u1100\u1169_1"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: street_customerChat_sound_0
+      name: "\u1105\u1169\u1100\u1169_0"
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 244
-        height: 503
+        y: 109
+        width: 670
+        height: 396
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,20 +144,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4f4f488c0125d200800000000000000
-      internalID: 204105695825448780
+      spriteID: 1af1f608db61a8640800000000000000
+      internalID: 5082900132600422305
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: street_customerChat_sound_1
+      name: "\u1105\u1169\u1100\u1169_1"
       rect:
         serializedVersion: 2
-        x: 258
-        y: 14
-        width: 224
-        height: 479
+        x: 109
+        y: 0
+        width: 414
+        height: 102
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3c17897ed8d0658a0800000000000000
-      internalID: -6316846524213464637
+      spriteID: 2e1c156f6332b01a0800000000000000
+      internalID: -6842336489891577374
       vertices: []
       indices: 
       edges: []
@@ -186,8 +186,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      street_customerChat_sound_0: 204105695825448780
-      street_customerChat_sound_1: -6316846524213464637
+      "\u1105\u1169\u1100\u1169_0": 5082900132600422305
+      "\u1105\u1169\u1100\u1169_1": -6842336489891577374
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

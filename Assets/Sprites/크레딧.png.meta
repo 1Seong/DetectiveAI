@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 5fc86c6306c2cd34d9b808e55e212d8f
+guid: 4ee0115b1679e5f45a541a14304d129e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 204105695825448780
-    second: street_customerChat_sound_0
-  - first:
-      213: -6316846524213464637
-    second: street_customerChat_sound_1
+      213: -7548598285634229633
+    second: "\u110F\u1173\u1105\u1166\u1103\u1175\u11BA_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: street_customerChat_sound_0
+      name: "\u110F\u1173\u1105\u1166\u1103\u1175\u11BA_0"
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 244
-        height: 503
+        width: 1920
+        height: 7100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,30 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4f4f488c0125d200800000000000000
-      internalID: 204105695825448780
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: street_customerChat_sound_1
-      rect:
-        serializedVersion: 2
-        x: 258
-        y: 14
-        width: 224
-        height: 479
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3c17897ed8d0658a0800000000000000
-      internalID: -6316846524213464637
+      spriteID: f7a26a87addfd3790800000000000000
+      internalID: -7548598285634229633
       vertices: []
       indices: 
       edges: []
@@ -186,8 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      street_customerChat_sound_0: 204105695825448780
-      street_customerChat_sound_1: -6316846524213464637
+      "\u110F\u1173\u1105\u1166\u1103\u1175\u11BA_0": -7548598285634229633
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
