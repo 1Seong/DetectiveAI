@@ -57,7 +57,7 @@
         arguments: [],
         dataUrl: buildUrl + "/Detective A&I.data.parts",
         frameworkUrl: buildUrl + "/Detective A&I.framework.js.gz",
-        codeUrl: buildUrl + "/Detective A&I.wasm.parts",
+        codeUrl: buildUrl + "/Detective A&I.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "DetectiveA_I",
@@ -76,7 +76,6 @@
       const nativeFetch = window.fetch.bind(window);
       const chunkCounts = {
         "/Detective A&I.data.parts": 82,
-        "/Detective A&I.wasm.parts": 17,
       };
 
       window.fetch = async (resource, options) => {
