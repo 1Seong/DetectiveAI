@@ -410,23 +410,32 @@ public class NPCManager : MonoBehaviour
         var result = await t;
 
         float score = CalculateScore(result);
+        Debug.Log(
+            $"[엔딩 판정] Score={score}, " +
+            $"NormalScore={resultData.NormalScore}, " +
+            $"GoodScore={resultData.GoodScore}, " +
+            $"ResultData={resultData.name}"
+        );
         List<string> response;
         Sprite sticker;
         SFXType type = SFXType.BadEnding;
         if (score < resultData.NormalScore)
         {
+            Debug.Log("[엔딩 판정] Bad");
             response = resultData.BadResponse;
             sticker = resultData.BadSticker;
             type = SFXType.BadEnding;
         }
         else if (score < resultData.GoodScore)
         {
+            Debug.Log("[엔딩 판정] Normal");
             response = resultData.NormalResponse;
             sticker = resultData.NormalSticker;
             type =  SFXType.NormalEnding;
         }
         else
         {
+            Debug.Log("[엔딩 판정] Good");
             response = resultData.GoodResponse;
             sticker = resultData.GoodSticker;
             type = SFXType.GoodEnding;

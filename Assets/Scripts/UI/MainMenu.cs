@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneTransitionManager.Instance.ChangeSceneAsync("SampleScene").Forget();
+        SceneTransitionManager.Instance.ChangeSceneAsync("Opening").Forget();
     }
 
     public void Options()

@@ -58,12 +58,12 @@ public class GameManager : MonoBehaviour
         CanUseInventory = false;
         optionPanel.SetActive(true);
         optionBackground.gameObject.SetActive(true);
-        creditButton.interactable = true;
-        exitButton.interactable = true;
+        creditButton.gameObject.SetActive(true);
+        exitButton.gameObject.SetActive(true);
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            creditButton.interactable = false;
-            exitButton.interactable = false;
+            creditButton.gameObject.SetActive(false);
+            exitButton.gameObject.SetActive(false);
         }
         optionBackground.DOFade(0f, 0f);
         optionBackground.DOFade(250.0f/255f, 0.3f);
