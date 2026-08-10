@@ -2,7 +2,7 @@
 
 > 플레이어가 직접 수집하고 해석한 증거를 바탕으로, AI 형사가 사건을 재구성하는 2D 추리 어드벤처
 
-[게임 플레이](https://1seong.github.io/DetectiveAI/) · [AI 활용 기술 문서](https://docs.google.com/document/d/15dc0hLqwKs7oqSOt1NUf-LCGrmEeYrv-Elw1sJkeeG4/edit?tab=t.0#heading=h.dacdckkmamph)
+[게임 플레이](https://1seong.github.io/DetectiveAI/) · [게임 소개 문서](https://docs.google.com/document/d/15dc0hLqwKs7oqSOt1NUf-LCGrmEeYrv-Elw1sJkeeG4/edit?tab=t.0#heading=h.glg28mro9zew)
 
 ## 프로젝트 개요
 
