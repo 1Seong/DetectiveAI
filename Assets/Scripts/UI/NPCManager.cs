@@ -257,8 +257,18 @@ public class NPCManager : MonoBehaviour
 
     public void SubmitRecord()
     {
-        if (string.IsNullOrEmpty(inputField.text)) return;
-        if (originalEvidenceRecord.collectiveEvidences.Count == 0 && originalEvidenceRecord.photos.Count == 0 && originalEvidenceRecord.audios.Count == 0) return;
+        if (string.IsNullOrEmpty(inputField.text))
+        {
+            ShowNoEvidenceText().Forget();
+            return;
+        }
+
+        if (originalEvidenceRecord.collectiveEvidences.Count == 0 && originalEvidenceRecord.photos.Count == 0 &&
+            originalEvidenceRecord.audios.Count == 0)
+        {
+            ShowNoEvidenceText().Forget();
+            return;
+        }
         EventSystem.current?.SetSelectedGameObject(null);
         SubmitRecordAsync().Forget();
     }
@@ -281,8 +291,15 @@ public class NPCManager : MonoBehaviour
         foreach(var i in originalEvidenceRecord.audios)
             input.evidenceDatas.Add(i.data);
         input.playerDescription = inputField.text;
-        
-        var output = await AISystemManager.Instance.AI.InputValidator.ValidateAsync(input);
+        EvidenceValidationResult output = new();
+        try{
+            output = await AISystemManager.Instance.AI.InputValidator.ValidateAsync(input);
+        }
+        catch(Exception e)
+        {
+            output.response = "잘 못들었어. 다시 설명해 줄 수 있나?";
+            output.status = "RequestClarification";
+        }
         loadingTextAnimator.Stop();
         
         loadingDialogue.SetActive(false);
@@ -329,8 +346,27 @@ public class NPCManager : MonoBehaviour
         record.playerDescription = inputField.text;
         input.evidenceRecords.Add(record);
         input.backgroundFacts = backgroundFacts.Facts;
-        deductionOutput = await AISystemManager.Instance.AI.Detective.DeduceAsync(input);
-        
+        try
+        {
+            deductionOutput = await AISystemManager.Instance.AI.Detective.DeduceAsync(input);
+        }
+        catch (Exception e)
+        {
+            deductionOutput = new FinalDeductionResult()
+            {
+                narrative = "음... 사실 추리 과정에 문제가 있었습니다. 다시 준비하도록 하죠.",
+                culprit = "불명확",
+                motive = "불명확",
+                scene = "불명확",
+                time = "불명확",
+                accessMethod = "불명확",
+                coreAction = "불명확",
+                originalStatus = "불명확",
+                copyDestination = "불명확",
+                tasteGapReason = "불명확",
+            };
+        }
+
         finalLoadingPanel.gameObject.SetActive(false);
 
         var s = new List<string>()
@@ -403,7 +439,27 @@ public class NPCManager : MonoBehaviour
         var t = AISystemManager.Instance.AI.Evaluator.EvaluateAsync(input);
         
         await PlayDialogue(s, monkeySprite, "미스터 A");
-        var result = await t;
+        DeductionEvaluationResult result;
+        try
+        {
+            result = await t;
+        }
+        catch (Exception e)
+        {
+            result = new DeductionEvaluationResult()
+            {
+                culpritScore = 0,
+                motiveScore = 0,
+                sceneScore = 0,
+                timeScore = 0,
+                accessMethodScore = 0,
+                coreActionScore = 0,
+                originalStatusScore = 0,
+                copyDestinationScore = 0,
+                tasteGapReasonScore = 0,
+                detectedMisleadingClaims = new()
+            };
+        }
 
         float score = CalculateScore(result);
         Debug.Log(
@@ -518,5 +574,20 @@ public class NPCManager : MonoBehaviour
             .Select(match => match.Value.Trim())
             .Where(sentence => !string.IsNullOrEmpty(sentence))
             .ToList();
+    }
+    
+    private bool isShowingWarning = false;
+    [SerializeField] private CanvasGroup warningCanvasGroup;
+    
+    private async UniTask ShowNoEvidenceText()
+    {
+        if (isShowingWarning) return;
+        isShowingWarning = true;
+        warningCanvasGroup.gameObject.SetActive(true);
+        await warningCanvasGroup.DOFade(1f, 0.3f).ToUniTask();
+        await UniTask.WaitForSeconds(2f);
+        await warningCanvasGroup.DOFade(0f, 0.3f).ToUniTask();
+        warningCanvasGroup.gameObject.SetActive(false);
+        isShowingWarning = false;
     }
 }
