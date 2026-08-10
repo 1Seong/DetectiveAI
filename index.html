@@ -55,9 +55,9 @@
       var loaderUrl = buildUrl + "/Detective A&I.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/Detective A&I.data.gz",
-        frameworkUrl: buildUrl + "/Detective A&I.framework.js.gz",
-        codeUrl: buildUrl + "/Detective A&I.wasm.gz",
+        dataUrl: buildUrl + "/Detective A&I.data",
+        frameworkUrl: buildUrl + "/Detective A&I.framework.js",
+        codeUrl: buildUrl + "/Detective A&I.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "DetectiveA_I",
@@ -69,41 +69,6 @@
         //    // to process it further, 'false' otherwise.
         //    return true;
         // },
-      };
-
-         // GitHub Pages serves the precompressed Unity files without compression headers.
-      // Decompress them in the browser before handing them to Unity's loader.
-      const nativeFetch = window.fetch.bind(window);
-
-      window.fetch = async (resource, options) => {
-        const url = typeof resource === "string" ? resource : resource.url;
-
-     const response = await nativeFetch(resource, options);
-
-        if (!url.endsWith(".gz") || !response.ok) {
-          return response;
-        }
-
-        if (!("DecompressionStream" in window)) {
-          throw new Error("이 브라우저는 압축된 WebGL 빌드 로딩을 지원하지 않습니다.");
-        }
-
-        const headers = new Headers(response.headers);
-        headers.delete("content-encoding");
-        headers.delete("content-length");
-
-        if (url.endsWith(".wasm.gz")) {
-          headers.set("content-type", "application/wasm");
-        } else if (url.endsWith(".js.gz")) {
-          headers.set("content-type", "application/javascript");
-        } else {
-          headers.set("content-type", "application/octet-stream");
-        }
-
-        return new Response(
-          response.body.pipeThrough(new DecompressionStream("gzip")),
-          { status: response.status, statusText: response.statusText, headers }
-        );
       };
 
       // By default, Unity keeps WebGL canvas render target size matched with
