@@ -5,6 +5,7 @@
 ## 코드
 
 ```mermaid
+%%{init: {"htmlLabels": false, "themeVariables": {"fontFamily": "Arial, sans-serif"}, "flowchart": {"padding": 20, "diagramPadding": 20}, "sequence": {"diagramMarginX": 24, "diagramMarginY": 16, "wrap": true}}}%%
 sequenceDiagram
   participant P as 플레이어
   participant N as NPCManager
@@ -27,6 +28,7 @@ sequenceDiagram
 공통 통신 클라이언트를 생성자로 주입(DI)해 작업별 입력·응답과 통신을 분리합니다. 세 AI는 서로 대체되는 전략이 아니며, 순서대로 실행된다는 이유만으로 Strategy나 Chain of Responsibility로 분류하지 않습니다.
 
 ```mermaid
+%%{init: {"htmlLabels": false, "themeVariables": {"fontFamily": "Arial, sans-serif"}, "flowchart": {"padding": 20, "diagramPadding": 20}, "sequence": {"diagramMarginX": 24, "diagramMarginY": 16, "wrap": true}}}%%
 flowchart LR
   S["AISystem 생성자"] --> C["공통 AIEdgeFunctionClient"]
   C -->|생성자 주입| V["InputValidationAI"]
