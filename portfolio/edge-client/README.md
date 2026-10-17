@@ -4,6 +4,21 @@
 
 ## 코드
 
+```mermaid
+sequenceDiagram
+  participant C as AI 호출자
+  participant E as AIEdgeFunctionClient
+  participant A as 익명 인증 클라이언트
+  participant S as Edge Function
+  C->>E: action과 입력 DTO
+  E->>A: 유효한 JWT 요청
+  A->>A: 잠금 후 재사용·갱신·발급
+  A-->>E: JWT
+  E->>S: 인증 헤더와 JSON
+  S-->>E: 작업별 결과 JSON
+  E-->>C: 타입별 DTO 또는 예외
+```
+
 **SupabaseAnonymousAuthClient:** 세션 재사용→갱신→익명 발급 순서로 토큰을 준비합니다. **AIEdgeFunctionClient:** 작업 종류와 입력을 서버로 보내고, 401이면 토큰을 무효화한 뒤 한 번 재시도합니다.
 
 ```csharp

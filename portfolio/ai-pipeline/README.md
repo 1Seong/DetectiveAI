@@ -4,6 +4,24 @@
 
 ## 코드
 
+```mermaid
+sequenceDiagram
+  participant P as 플레이어
+  participant N as NPCManager
+  participant V as InputValidationAI
+  participant D as DetectiveAI
+  participant E as DeductionEvaluationAI
+  P->>N: 증거 묶음과 설명 제출
+  N->>V: 관련성 검증 요청
+  V-->>N: Accept 또는 재설명
+  N->>D: 수용된 입력과 배경 사실
+  D-->>P: 구조화된 추리 결과
+  P->>N: 추리 확인
+  N->>E: 결론과 사건 정답 평가
+  E-->>N: 항목별 평가
+  N-->>P: 점수·결과 연출
+```
+
 **InputValidationAI / DetectiveAI / DeductionEvaluationAI:** validate·deduce·evaluate 요청을 각자 전용 DTO로 처리합니다. **NPCManager:** 증거 제출과 사용자 확인 순서에 맞춰 호출합니다. **BackgroundFacts / CaseSolution / ResultData:** 배경 사실·사건 정답·결과 연출 설정을 분리합니다.
 
 ```csharp

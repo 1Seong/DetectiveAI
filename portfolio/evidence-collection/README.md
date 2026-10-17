@@ -4,6 +4,17 @@
 
 ## 코드
 
+```mermaid
+flowchart LR
+  A["촬영 영역 선택"] --> B["영역 안 증거 메타데이터"]
+  C["잘라낸 임시 텍스처"] --> D["픽셀 사본"]
+  B --> E["목록 복사 · 에셋 참조 공유"]
+  D --> F["PhotoData"]
+  E --> F
+  F --> G["인벤토리·제출 UI"]
+  G --> H["증거 사실과 플레이어 해석을 AI 입력에 결합"]
+```
+
 **EvidenceData:** AI에 전달할 식별자와 사실을 담습니다. **ScreenShotSelectionController:** 촬영 영역 안의 증거를 모읍니다. **PhotoDataHelper / InventoryManager:** 사진과 메타데이터를 보관하고 텍스처를 해제합니다. **SoundSource / CollectiveEvidence:** 클릭 수집을 인벤토리로 연결합니다.
 
 ```csharp
