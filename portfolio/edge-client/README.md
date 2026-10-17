@@ -7,7 +7,7 @@
 ```mermaid
 sequenceDiagram
   participant C as AI 호출자
-  participant E as AIEdgeFunctionClient
+  participant E as AIEdgeFunctionClient · Facade 역할
   participant A as 익명 인증 클라이언트
   participant S as Edge Function
   C->>E: action과 입력 DTO
@@ -20,6 +20,8 @@ sequenceDiagram
 ```
 
 **SupabaseAnonymousAuthClient:** 세션 재사용→갱신→익명 발급 순서로 토큰을 준비합니다. **AIEdgeFunctionClient:** 작업 종류와 입력을 서버로 보내고, 401이면 토큰을 무효화한 뒤 한 번 재시도합니다.
+
+InvokeAsync<T>는 인증·HTTP·DTO 변환을 감추는 **Facade 역할**입니다. 세션은 세마포어 잠금 안에서 재확인해 동시 갱신을 줄이며, 이는 GoF 패턴명 대신 동시성 제어로 구분합니다.
 
 ```csharp
 // SupabaseAnonymousAuthClient: 동시 요청이 세션 발급·갱신을 중복 실행하지 않도록 직렬화

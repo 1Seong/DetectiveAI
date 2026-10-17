@@ -24,6 +24,16 @@ sequenceDiagram
 
 **InputValidationAI / DetectiveAI / DeductionEvaluationAI:** validate·deduce·evaluate 요청을 각자 전용 DTO로 처리합니다. **NPCManager:** 증거 제출과 사용자 확인 순서에 맞춰 호출합니다. **BackgroundFacts / CaseSolution / ResultData:** 배경 사실·사건 정답·결과 연출 설정을 분리합니다.
 
+공통 통신 클라이언트를 생성자로 주입(DI)해 작업별 입력·응답과 통신을 분리합니다. 세 AI는 서로 대체되는 전략이 아니며, 순서대로 실행된다는 이유만으로 Strategy나 Chain of Responsibility로 분류하지 않습니다.
+
+```mermaid
+flowchart LR
+  S["AISystem 생성자"] --> C["공통 AIEdgeFunctionClient"]
+  C -->|생성자 주입| V["InputValidationAI"]
+  C -->|생성자 주입| D["DetectiveAI"]
+  C -->|생성자 주입| E["DeductionEvaluationAI"]
+```
+
 ```csharp
 // AI/DetectiveAI: 사진·물건·소리에서 추출한 공통 증거와 해석을 연결
 [Serializable]
